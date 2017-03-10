@@ -1,0 +1,264 @@
+%
+% The standard LaTeX article class is close to what is needed for an MPhys project report
+\documentclass[12pt]{article}
+
+% The following package makes the necessary tweaks to comply with the formatting requirements.
+% It also provides a standardised title page, and will warn you if the main text is too long.
+\usepackage{mphysproject}
+%
+%% DO NOT GO CHANGING THE FONT SIZE OR MARGINS! If your main text doesn't fit within 50 pages,
+%% you will have to cut stuff out.
+%
+
+% The formatting of the document can be enhanced by loading extra packages.
+%
+% An essential package is `graphicx', which is loaded by the mphysproject package so you don't
+% need to load this yourself. This allows you to include figures using the \includegraphics command.
+% To get more information about a package, type texdoc <package> on the Unix command line,
+% substituting <package> with the name of the package, e.g., texdoc graphicx
+%
+% For a wider variety of mathematical environments, symbols and formatting options:
+%\usepackage{amsmath,amssymb}
+%
+% If you want to use colour in the text
+%\usepackage{color}
+%
+% If you want to put figures side by side with separate captions
+\usepackage{subfigure}
+%
+% If you happen to dislike the standard TeX fonts
+%\usepackage{times}
+%
+% If you include any URLs in your text and/or want to make cross-references clickable, include one of the following
+% two lines
+\usepackage{hyperref}  % This enables hyperlinks but leaves them in black, which is best for printing
+%\usepackage[colorlinks=true]{hyperref} % This colours the hyperlinks, which is better for screen reading
+
+% My packages
+\usepackage{fullpage,epsf}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{courier}
+\usepackage{epstopdf}
+\usepackage{placeins}
+\epstopdfsetup{update}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+\usepackage[]{cite}
+
+\newcommand*{\MyPath}{/Users/MichaelChiang/Dropbox/Edinburgh/Courses/Year 3/SH_Project/cell_potts_model}
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\inc}{\Delta}
+\newcommand{\etal}{\emph{et al.}}
+
+\begin{document}
+
+\title{Investigating Chromosomal Dynamics with Epigenetics using Molecular Dynamics Simulation} % Place your project title in here
+\author{Michael Chiang} % Put your name here
+\supervisor{Professor D. Marenduzzo} % Place your principal supervisor here
+%\supervisor{Dr A. Smith} % If you have additional supervisors, list them with separate \supervisor commands
+%\date{1st January 2017} % Today's date will appear on the title page by default, but if you want to tie this to a particular date, you can do so here
+
+% Insert your abstract below
+\begin{abstract}
+The abstract is a short concise outline of your project area, {\bf of no more than 100 words}. Avoid equations and references in an abstract. 
+\end{abstract}
+
+% This command is essential to make the title page appear
+\maketitle
+
+% This command introduces the Personal Statement
+\personalstatement
+
+
+% This command inserts a table of contents, and sets things up for the main text of your report.
+% The page count starts from here.
+\maintext
+
+
+\section{Introduction}
+
+%This section should present a brief motivation for your project work. The main purpose here is to  set out the scientific question you aim to answer in your project, and the reasons why this is of current scientific interest. Try and think of the bigger picture beyond your project work (and make sure you return to this in the conclusion). If appropriate you can also give a summary of the report and what each section contains.
+
+%As a guide, this section should be intelligible to other MPhys students doing projects in different areas.
+\begin{comment}
+It is well known that deoxyribonucleic acid (DNA) is one of the most important substances in all life on Earth. DNA encodes all the instructions required for an organism to function properly and, more importantly, to reproduce itself. These instructions are expressed in a language comprised of four basic units called nucleotides: adenine (A), guanine (G), cytosine (C), and thymine (T). The 
+
+Despite a majority of the instructions of life is stored in the DNA, over the past few decades scientists have discovered . These heritable changes in genes which do not involve alterations in the genetic sequence of the DNA are referred as epigenetic modifications \cite{DNABook, probst2009}. Different classes of epigenetic modifications have been identified. For instance, these could be direct biochemical modifications on the nucleotides (e.g. DNA methylation) or histone proteins, which are prot. These modifications are important as they . An example 
+
+Unlike the underlying genetic sequence in DNA, these 
+A major focus in the study of epigenetics is to understand the mechanisms behind the establishment of epigenetic patterns and the stable inheritance of these modifications over generations of cells.
+
+A class of approach used to understand the mechanisms is through mathematical modelling. Many biophysical models have been proposed and have successfully explained some aspects of the establishment and inheritance of epigenetic marks \cite{dodd2007, zhang2014, jost2014}. However, most of these models focus only on the epigenetic landscape. It has been recognised that there are interconnections between the dynamics of the chromatin fibre and epigenetic modifications \cite{}. In addition, a lot of the models only allow the proliferation of a single type of epigenetic modification on the modelled chromatin. It is clear that for additional information to be encoded one would need to allow a stable maintenance of multiple epigenetic marks. Hence, it is of interest to develop a model that can provide a mor
+
+Recently, the simulation work by Micheletto \etal \cite{micheletto2016} has given some insight in coupling epigenetic modifications and chromatin dynamics. They used a polymer model to simulate the three-dimensional (3D) dynamics of the chromatin fibre 
+
+The project focuses on investigating the coupling of another 
+
+coupling a stochastic one-dimensional model proposed by Dodd et. al. (cite), which successfully characterise the spreading and maintenance of epigenetic marks, with a three-dimensional polymer model that describes chromatin dynamics. The epigenetic model proposed by Dodd et. al. based . Like the  
+
+The remaining sections of the report are as follows: Section 2 provides an overview o
+\end{comment}
+\pagebreak
+\begin{figure}[h]
+\centering
+\includegraphics[height = 11cm]{figure/chromatin.jpg}
+\caption{An illustration of how the DNA is packaged into a chromosome. The DNA compacts itself by coiling around groups of histone proteins to form nucleosomes. These nucleosomes associate with each other to form the chromatin fibre. The fibre condenses itself further to form the chromosome.}
+\label{fig:chromosome}
+\end{figure}
+\section{Background}
+%Here you would expand on the general background to the project. This might include important observations, experiments or conceptual developments in the field. You may also wish to discuss related approaches that have been taken to solve the problem that your project concerns. Make sure you describe your understanding of the relevant literature in your own words, and include references to the relevant sources. One way to manage this is to enter your references into a {\tt BibTeX} file, as this will automatically number and format your references in a standardised way  (see Appendix~\ref{sec:bibtex} for details).  This allows easy numbered referencing of references. 
+%The most appropriate sources at the MPhys level will be papers in scientific journals \cite{jr:ashkin} and conference proceedings \cite{seger}, as well as textbooks covering intermediate or advanced level material \cite{ob:bornwolf}. If you are building on the work of former MPhys \cite{mphys:renton} or PhD \cite{phd:blythe} students, you might need to cite their theses/reports as well. For more general background, readable articles in popular science journals \cite{jr:dholakia}, and  standard textbooks \cite{ob:hechtoptics} may be included.
+
+\subsection{DNA and Chromosome}
+To fully appreciate the discussion on epigenetic modifications and the simulation work performed in this project, it is important to understand how the DNA is stored within a (eukaryotic) cell. The DNA is located within the cell nucleus and is organised into highly compact structures called chromosomes. At the elementary level, the DNA is packaged into nucleosomes, similar to a ``beads-on-a-string'' structure (see figure~\ref{fig:chromosome}). The core of each nucleosome is the histone octamer, which contains two copies of four kinds of histone proteins: H2A, H2B, H3, H4. The octamer is wrapped around by roughly 150 base pairs (bp) of DNA sequence. There are approximately 50 bp of DNA between two nucleosomes, and the H1 histone protein binds to this region~\cite{DNABook}. The nucleosomes organise themselves into higher order structures by associating with each other to form the chromatin fibre. The fibre compacts itself further by mechanisms such as forming loops and rosettes~\cite{brackley2016}. It is only during cell division (metaphase specifically) that the fibre condenses to the X-shape structure to prepare for the separation of the genetic materials.  
+
+\subsection{Epigenetic Modifications}
+It is well known that the DNA contains all the instructions which govern the development and functions of a cell. Yet, it is also recognised that the genetic information encoded by the DNA does not completely determined a cell's identity. Cells with the same genome can have different physical characteristics, or different phenotypes, which are often heritable. Epigenetics is the study of heritable changes in the genetic activity which do not arise from the alteration of the DNA sequence\cite{DNABook, probst2009}. These changes are often associated with modifications to the chromosome. Two well-known types of epigenetic modifications, or ``epigenetic marks'', are DNA methylation and histone modifications. Both have significant influence on the biological functions of a cell by regulating its genetic expression -- whether a particular gene should be active or inactive. 
+
+\subsubsection{DNA Methylation}
+DNA methylation refers to the addition of the methyl group ($\ce{CH3}$) to a particular nucleotide, the basic unit of the genetic code, of the DNA. Most commonly, methylation occurs to the cytosine within the cytosine-guanine (CG or CpG) pair in the genetic sequence. Studies have shown that CpG methylation is related to various biological processes, such as transcriptional repression, X-chromosome suppression in female mammals, and cell specialisation during embryonic development~\cite{DNABook}. 
+
+\subsubsection{Histone Modifications}
+\label{sec:histone}
+Histone modifications, which are the type of epigenetic mechanism of interest in this project, refer to the biochemical modifications that are applied to the histone proteins in the nucleosomes. As with other proteins, histones are composed of amino acids, which are the basic building blocks of any protein molecules. Histones adapt a structure such that it has an extended ``tail'' which tends to protrude from the chromatin fibre, and different functional groups can bind to specific amino acids within the tail~\cite{strahl2000}. Three common types of modifications are acetylation (addition of $\ce{CH3CO}$), methylation (addition of $\ce{CH3}$), and phosphorylation (addition of $\ce{PO4^{3-}}$). 
+
+Much research has been conducted on investigating how histone modifications affect gene expression and the structure of the chromatin fibre. Histone acetylation has been suggested to promote gene transcription and allow the chromatin fibre to adapt a more open configuration~\cite{shahbazian2007}. Methylation has been indicated to correlate with the silencing and activation of transcription, depending on the specific sites where the modification took place~\cite{greer2012}. Phosphorylation has been thought to regulate chromosome condensation during mitosis~\cite{sawicka2014}. It has also been considered that a specific effect on gene expression may be a result of multiple modifications (on multiple histones). This gives rise to the view that the modifications form a ``histone-code''~\cite{strahl2000} which controls various genetic activities.
+
+The actual mechanisms by which functional groups are added and removed from histones have also been investigated. Research has found that there are ``modifying'' and ``de-modifying'' enzymes which catalyse the addition and removal of the functional groups. For acetylation, these enzymes are classified as histone acetyltransferases (HATs) and histone deacetylase complexes (HDACs), whereas for methylation, they are classified as histone methyltransferases (HMTs) and histone demethylases (HMDs)~\cite{shahbazian2007, greer2012}.
+
+\subsection{Establishment and Maintenance of Epigenetic Marks}
+A fundamental question which remains to be understood is how certain epigenetic patterns are established during development, and how these patterns are faithfully inherited from one generation of cells to the next. A classic example of the establishment and maintenance of epigenetic marks is the transcriptional silencing of one of the X-chromosomes in female mammalian cells, or X-chromosome inactivation~\cite{avner2001}. This silencing is important to avoid over-expression of genes in the X-chromosomes, which could be lethal. During early embryonic development, one of the two X-chromosomes is randomly inactivated in each cell, and the same chromosome remains inactive in all descendants of the cell. The actual inactivation process is achieved by the spreading of repressive epigenetic marks~\cite{heard2001, nicodemi2007}, causing the chromosome to condense into a transcriptionally silenced conformation known as a Barr body~\cite{avner2001}. 
+
+Models have been developed to study the mechanics behind the establishment and maintenance of epigenetic modifications~\cite{dodd2007, hathaway2012, zhang2014, jost2014}. Although these models can successfully describe some aspects of the spreading and retainment of epigenetic marks, they do not sufficiently capture the spatial organisation of the chromosome, which may be an important point to consider. It has been recognised that epigenetic patterns are closely related to the three dimensional (3D) conformation of the chromatin fibre. In particular, repressive epigenetic marks are associated with the fibre adapting a more compact conformation, whereas active marks are related to the fibre having a more opened configuration~\cite{cortini2016, shahbazian2007, hathaway2012}. This apparent connection between epigenetic modifications and chromatin dynamics leads to the hypothesis that there may be a strong feedback between the self-regulation of epigenetic patterns and the spatial configuration of the chromatin fibre.% It would be of interest to develop models which characterise this feedback.
+
+\subsubsection{``Read-Write'' Mechanism}
+\label{sec:read-write}
+A possible method to achieve the feedback is by the ``read-write'' mechanism. It has been observed that there are ``reader'' and ``writer'' enzymes which can either recognise or deposit epigenetic marks. The ``readers'' are thought to be proteins which can bind to multiple sites along the chromatin fibre with the same epigenetic mark~\cite{brackley2013}. The ``writers'' are responsible for adding distinct modifications and spreading them along the fibre. More importantly, it has been suggested that the ``writer'' of a specific mark is ``recruited'' by the ``reader'' of the same mark, thus achieving a positive feedback loop that allows epigenetic patterns to be stably established and sustained~\cite{dodd2007, hathaway2012}. 
+
+There are multiple examples which support this mechanism. For instance, regions along the DNA strand that are actively transcribed are thought to be modified by certain active epigenetic marks, such as the methylation of lysine 4 in histone H3 (H3K4)~\cite{zentner2013}. During the transcription process, the RNA polymerase attaches to a DNA strand to create a messenger RNA copy of the strand. The polymerase attracts the enzymes Set1 and Set2, which are methyltransferases (HMTs) that catalyses the methylation of H3K4~\cite{zentner2013, ruthenburgh2007}. One can, therefore, view the polymerase as the ``reader'', and Set1 and Set2 as the ``writers''. Another example occurs within the heterochromatin, a region within the chromatin fibre that is tightly packed with few active genes and is associated with a higher concentration of methylated marks, such as the methylation of H3K9. It is known that the heterochromatin binding protein HP1, acting as the ``reader'', would recruit the methyltransferase SUV39H, the ``writer'', which facilitates the methylation of H3K9 along the chromatin fibre~\cite{zentner2013}.
+
+\subsection{Motivation of the Study}
+Recently, the simulation work by Michieletto \etal\cite{michieletto2016} provided a more comprehensive modelling and analysis of the ``read-write'' mechanism. Their simulations couple a polymer model that describes the 3D chromatin folding dynamics with a Potts-like model that regulates epigenetic changes on the chromatin.  By allowing monomers, which represent coarse-grained nucleosomes, to change between three possible epigenetic states via the standard Metropolis algorithm, and by introducing a finite attractive potential between modified monomers of the same state (to model binding by the ``reader'' enzyme), they found the system exhibits a first-order-like transition between a compact, epigenetically ordered and a swollen, epigenetically disordered configuration. They suggested that this form of transition naturally allows the stable establishment and preservation of epigenetic states, because the system retains memory of its epigenetic patterns due to hysteresis effects. They further demonstrated that the model allows long-lived, metastable domains of different epigenetic states when the effective temperatures for the chromatin dynamics and the epigenetic modifications are different. 
+
+This simulation work demonstrated that coupling epigenetic modifications with chromatin folding does provide a reliable mean for epigenetic patterns to form and sustain. It would be of interest to investigate whether other biologically-motivated 1D epigenetic models would allow stable establishment and maintenance of epigenetic marks when explicitly coupled with 3D chromatin dynamics. This would provide further support for the ``read-write'' mechanism. With this in mind, the project focuses on combining a well known 1D epigenetic model proposed by Dodd \etal~\cite{dodd2007} with a polymer model that simulates the 3D dynamics of the chromatin fibre, similar to that used in reference~\cite{brackley2013, michieletto2016}. There are two main objectives to the project: Firstly, we wish to identify the possible configurations (or phases) of the system within the combined model and to characterise the nature of the transitions between these phases. This would give indications of whether epigenetic patterns can be reliably established and sustained within the model. Secondly, we wish to extend the model to investigate possible mechanisms that would allow the stable formation and sustainment of multiple epigenetic domains along the chromatin fibre. 
+
+\section{Methodology}
+\subsection{Simulation Model}
+We model a chromatin fibre as a semi-flexible ``bead-and-spring'' polymer of $N$ beads~\cite{kremer1990}. In line with common mappings used in modelling chromatin dynamics~\cite{rosa2008, mirny2011, brackley2016, michieletto2016}, each bead has a diameter of $\sigma = 30$ nm and represents roughly 3 kbp, which corresponds to around 15 nucleosomes. Each bead is also assigned a ``colour'' $q$ to represent a particular epigenetic modification. Unless otherwise stated, we assume there are three colours ($q \in \{1, 2, 3\}$), corresponding to the following modifications: acetylated, unmarked, and methylated. 
+
+\subsubsection{Modelling Dynamics of the Chromatin Fibre}
+We simulate the dynamics of the chromatin fibre by performing Brownian dynamics (BD) simulations, which were run using the large-scale atomic/molecular massively parallel simulator (LAMMPS) (in BD mode). The interactions between the beads are governed by several potentials that are standard in polymer physics. Firstly, there is a truncated and shifted Lennard-Jones (LJ) potential acting between any two consecutive beads given by:
+\begin{eqnarray}
+U_{LJ}(r \equiv |\bm{r}_{i+1} - \bm{r}_i|) = \left\{ 
+	\begin{array}{ll}
+		4\epsilon \left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^6\right] + \epsilon & \textrm{if $r < 2^{1/6}\sigma$}\\
+		0 & \textrm{otherwise},
+	\end{array}
+\right.
+\end{eqnarray}
+where $\epsilon = k_BT$ is the bond energy, $\sigma$ is the diameter of a bead, and $r$ is the distance between the two beads. This is a purely repulsive potential to reduce overlapping between neighbouring beads and is known as the Weeks-Chandler-Anderson (WCA) potential. Secondly, to ensure connectivity of the fibre, we add a finite extensible nonlinear elastic (FENE) spring between beads, which is given by
+\begin{eqnarray}
+U_{FENE}(r) = - \frac{K_{FENE}R_0^2}{2}\ln\left[1-\left(\frac{r}{R_0}\right)^2\right],
+\end{eqnarray}
+where $R_0$ is the maximum separation between beads, which is set to $1.6\sigma$, and $K_{FENE}$ is the strength of the spring, which is set to $30k_BT/\sigma$. The combination of the WCA and the FENE potential with the chosen parameters gives a bond length that is approximately equal to $ \sigma$~\cite{brackley2013}. We model the stiffness of the chromatin fibre by including a bending potential~\cite{kremer1990}
+\begin{eqnarray}
+U_{bend}(\theta) = K_b \left[1 + \cos(\theta)\right],
+\end{eqnarray}
+where $\theta$ is the angle between any three consecutive beads in the fibre and $K_b$ determines the strength of the stiffness and is set to $3\,k_BT$ in the simulation. It should be noted that $K_b/(k_BT)$ gives the persistent length of the modelled fibre in units of $\sigma$. 
+
+To model the effect of a ``reader'' enzyme binding to multiple sites along the chromatin fibre with the same epigenetic mark, we include an additional truncated and shifted LJ potential:
+\begin{eqnarray}
+U_{LJ}^{ij}(r_{ij}) = \left\{ 
+	\begin{array}{ll}
+	\epsilon_{q_iq_j} \left[ \left(\frac{\sigma}{r_{ij}}\right)^{12}-\left(\frac{\sigma}{r_{ij}}\right)^{6}-\left(\frac{\sigma}{r_c^{q_iq_j}}\right)^{12}+\left(\frac{\sigma}{r_c^{q_iq_j}}\right)^{6}\right] & \textrm{for $r_{ij} \le r_c^{q_iq_j}$}\\
+	0 & \textrm{for $r > r_c^{q_iq_j}$},
+	\end{array}
+\right.
+\end{eqnarray}
+where $r_{ij}$ is the separation between the $i$th and the $j$th bead. When the beads have different colours, or when one or more of the beads are unmodified ($q_i \neq q_j$, or $q_i$ or $q_j = 2$), we set $\epsilon_{q_iq_j} = k_BT$ and $r_c^{q_iq_j} = 2^{1/6}\sigma$ to model pure repulsion between the beads. When both beads are modified and have the same colour ($q_i = q_j$ and $q_i, q_j \neq 2$), we set $\epsilon_{q_iq_j}= \epsilon$ and $r_c^{q_iq_j} = R$ to model attraction. $R$ is the cut-off distance, or the maximum distance that a modified bead will feel an attraction from another bead with the same colour. $\epsilon$, which governs the strength of the attraction between like-colour beads, is one of the two parameters that is varied in the simulation. 
+
+The time evolution of each bead, say the $i$th bead, in the fibre is governed by the following Langevin equation:
+\begin{eqnarray}
+m\frac{d^2\bm{r}_i}{dt^2} = - \nabla_i U - \gamma \frac{d\bm{r}_i}{dt} + \sqrt{2k_BT\gamma}\bm{\eta}_i(t),
+\end{eqnarray}
+where $m$ is the mass, $\gamma$ is the friction coefficient, $k_B$ is the Boltzmann constant, $T$ is the temperature, and $\bm{\eta}$ is a stochastic noise vector with the following statistical properties:
+\begin{eqnarray}
+\langle\bm{\eta}(t)\rangle = 0;\;\;\; \langle\eta_{i,\alpha}(t)\eta_{j,\beta}(t')\rangle = \delta_{ij}\delta_{\alpha\beta}\delta(t-t'),
+\end{eqnarray}
+where the Latin indices represent particle indices and the Greek indices represent Cartesian components. For simplicity, we set $m = 1$ for all beads. We also set $\gamma$, $k_B$, and $T$ equal to 1. The dynamics is obtained by integrating the Langevin equation using the velocity-Verlet integration scheme within LAMMPS. We set each integration time step to be $\Delta t = 0.01\tau_{Br}$, where $\tau_{Br}$ is the Brownian time, or the typical time for a bead in the fibre to move to a different position. Unless otherwise stated, all simulations were run for a duration of $10^6\;\tau_{Br}$.
+
+\subsubsection{Modelling Epigenetic Modifications}
+We simulate the epigenetic modifications on the chromatin fibre (i.e. a recolouring step) based on the 1D model proposed by Dodd \etal \cite{dodd2007}. This model, in turn, is inspired by the observations that there are modifying and de-modifying enzymes (HATs, HMTs, HDACs, HDMs) which change the epigenetic marks on the histone tails (see section~\ref{sec:histone}). We perform recolouring every $\tau_{colour} = 10\tau_{Br}$. This time choice allows the system to explore enough spatial configurations between recolouring moves while keeping the simulation efficient. In each recolouring step, we conduct $N$ attempts of colour conversion such that each bead, on average, receives a single conversion attempt. The procedure of a specific conversion attempt is as follows: 
+
+\begin{enumerate}
+\item A bead $n_1$ to be modified is first selected from the fibre. It either undergoes a recruited conversion attempt (Step 2), with probability $\alpha$, or a noisy conversion attempt (Step 3), with probability $1 - \alpha$.
+
+\item Recruited conversion: Another bead  $n_2$ is selected at random from the beads that are within the cut-off distance $R$ from $n_1$. The colour of $n_1$ is then changed one step towards that of $n_2$. More precisely, the rules are as follows:
+\begin{itemize}
+\item If $q_{n_2} = 1$, $q_{n_1}$ is changed $3 \rightarrow 2$ or $2 \rightarrow 1$
+\item If $q_{n_2} = 3$, $q_{n_1}$ is changed $1 \rightarrow 2$ or $2 \rightarrow 3$
+\item If $q_{n_2} = 2$ or $q_{n_1} = q_{n_2}$, $q_{n_1}$ remains the same
+\end{itemize}
+
+\item Noisy conversion:  $n_1$ is changed one step towards either one of the two other states with probability of $1/3$, and no direct conversion between $q  = 1$ and 3 is allowed. Specifically, the rules are as follows:
+\begin{itemize}
+\item If $q_{n_1} = 1$ or $3$, it has a probability of $1/3$ to switch to $2$ and a probability of $2/3$ to remain the same
+\item If $q_{n_1} = 2$, it has an equal probability of $1/3$ to switch to any of the states
+\end{itemize}
+This rule ensures that there is, on average, an equal number of beads in each of the three states when the probability of a recruited and noisy conversion is the same ($\alpha = 1 - \alpha = 0.5$).
+\end{enumerate}
+
+The recolouring rules do not allow the direct conversion between $q = 1$ and 3. This is to model that any existing modifications has to be de-modified before another modification can be applied, in line with the observations that there are de-modifying enzymes (HDACs and HDMs) and modifying enzymes (HATs and HMTs). The recruited conversion models the positive feedback mechanism suggested in section~\ref{sec:read-write}, where a ``reader'' enzyme for a particular epigenetic mark has the ability to recruit a ``writer'' enzyme of the same mark. On the other hand, the noisy conversion simulates the activity of free modifying and de-modifying enzymes that change the modifications along the fibre in a stochastic manner.
+
+As detailed in the paper by Dodd \etal, the key parameters which govern the epigenetic landscape in this model is ratio of the probability of a recruited attempt to that of a noisy attempt, which is referred as the feedback-to-noise ratio $F = \alpha / (1-\alpha)$. It is clear that a higher $F$ would give a higher probability for a recruited conversion to occur, resulting in a stronger feedback and a more coherent epigenetic landscape.
+
+\begin{comment}
+\subsubsection{Mapping between Simulation and Physical Time-Scale}
+
+
+\subsubsection{Initialisation}
+The simulations
+
+\subsection{Model Implementation}
+
+\subsection{Testing}
+
+
+
+\section{Results and Discussion}
+
+
+
+\section{Conclusion}
+\end{comment}
+
+
+
+
+% This command tells LaTeX how to format your references in the biblography. The standard plain formatting, with
+% references appearing in the order they are cited, is absolutely fine for our needs.
+\bibliographystyle{mybibstyle}
+
+% This command includes the reference list. You will need to compile two or three times (perhaps BiBTeXing after
+% the first time) to get the references in synch with the text.
+\bibliography{bibliography}
+
+% This command switches to appendices. The page count ends here.
+% NOTE: the material contained in appendices will NOT count towards the assessment of your report.
+% Consequently the main text should be self-contained.
+\appendix
+
+
+\end{document}

@@ -1,0 +1,14 @@
+\section{Simulation Details}
+We discuss additional simulation details here for those who intend to reproduce the results obtained in the report.
+
+\subsection{The Velocity-Verlet Integration Scheme}
+The velocity-Verlet integration scheme is a variation of the Verlet algorithm. The Verlet algorithm can be obtained by considering the Taylor expansion of the particle's position $\bm{r}(t)$ around $t$:
+\begin{align}
+\bm{r}(t + \inc t) & = \bm{r}(t) + \bm{v}(t) \inc t + \frac{\bm{a}(t) }{2}\inc t^2 + \O{\inc t^3}\\
+\bm{r}(t - \inc t) & =  \bm{r}(t) - \bm{v}(t) \inc t  + \frac{\bm{a}(t)}{2} \inc t^2 + \O{\inc t^3},
+\end{align}
+where $\bm{v}{t}$ and $\bm{a}(t)$ are the velocity and the acceleration of the particle respectively. Subtracting the two equations gives:
+\begin{equation}
+\bm{r}(t+\inc t) - \bm{r}(t - \inc t) = 2 \
+\end{equation}
+
