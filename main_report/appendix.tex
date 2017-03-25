@@ -3,29 +3,105 @@ We discuss additional simulation details here for those who intend to reproduce 
 
 \subsection{The Velocity-Verlet Integration Scheme}
 \label{app:velocity-verlet}
-The velocity-Verlet integration scheme is a variation of the Verlet algorithm. The Verlet algorithm can be obtained by considering the Taylor expansion of the particle's position $\bm{r}(t)$ around $t$:
+The velocity-Verlet integration scheme is a variation of the Verlet algorithm. The Verlet algorithm can be obtained by considering the Taylor expansions of the particle's position $\bm{r}(t)$ at $t$ :
 \begin{align}
-\bm{r}(t + \inc t) & = \bm{r}(t) + \bm{v}(t) \inc t + \frac{\bm{a}(t) }{2}\inc t^2 + \O{\inc t^3}\\
-\bm{r}(t - \inc t) & =  \bm{r}(t) - \bm{v}(t) \inc t  + \frac{\bm{a}(t)}{2} \inc t^2 + \O{\inc t^3},
+\bm{r}(t + \inc t) & = \bm{r}(t) + \bm{v}(t) \inc t + \frac{\bm{a}(t) }{2}\inc t^2 + \frac{\bm{b}(t) }{6}\inc t^3 + \O{\inc t^4}\\
+\bm{r}(t - \inc t) & =  \bm{r}(t) - \bm{v}(t) \inc t  + \frac{\bm{a}(t)}{2} \inc t^2 - \frac{\bm{b}(t) }{6}\inc t^3 + \O{\inc t^4},
 \end{align}
-where $\bm{v}{t}$ and $\bm{a}(t)$ are the velocity and the acceleration of the particle respectively. Subtracting the two equations gives:
+where $\bm{b}(t) = \frac{\partial^3\bm{r}(t)}{\partial t^3}$, $\bm{a}(t)$ is the acceleration, and $\bm{v}(t)$ is the velocity. Adding the two equations gives
 \begin{equation}
-\bm{r}(t+\inc t) - \bm{r}(t - \inc t) = 2 \
+\bm{r}(t+\inc t)  = 2\bm{r}(t) - \bm{r}(t-\inc t) + \bm{a}(t)\inc t^2 + \O{\inc t^4},
 \end{equation}
+which is the standard form of the Verlet algorithm. As suggested by the equation, the integrated position has an accuracy up to fourth order in $\inc t$. The velocity of the particle can also be obtained from subtracting the two expansions
+\begin{equation}
+\bm{r}(t+\inc t) - \bm{r}(t - \inc t) = 2\bm{v}(t)\inc t + \O{\inc t^3},
+\end{equation}
+which gives
+\begin{equation}
+\bm{v}(t) = \frac{\bm{r}(t+\inc t) - \bm{r}(t - \inc t)}{2\inc t} + \O{\inc t^2},
+\end{equation}
+so the velocity has an accuracy up to second order. The standard form of the Verlet algorithm gives the position and velocity of the particle at different time steps. The velocity-Verlet algorithm resolves this problem. In this algorithm, one performs the following procedure:
+\begin{enumerate}
+\item Compute $\bm{v}\left(t + \frac{\inc t}{2}\right) = \bm{v}(t) + \frac{\bm{a}(t)}{2} \inc t$
+\item Compute $\bm{r}(t + \inc t) = \bm{r}(t) + \bm{v}\left(t + \frac{\inc t}{2}\right)\inc t$
+\item Calculate $\bm{a}(t + \inc t)$ from evaluating the force of the particle at the new position $\bm{r}(t + \inc t)$
+\item Compute $\bm{v}\left(t + \inc t\right) = \bm{v}\left(t + \frac{\inc t}{2}\right) + \frac{\bm{a}(t + \inc t)}{2} \inc t$
+\end{enumerate}
+After completing the these steps one would have both the position and velocity data of the particle at time $t + \inc t $. It can be readily shown by substitution that this set of procedures satisfies the standard form of the Verlet algorithm, so the order of accuracy for position and velocity are the same as before.  
 
 \subsection{Mapping between Simulation and Physical Timescales}
+\label{app:timescale}
 In section~\ref{sec:mapping}, we give a simple outline of how to convert between simulation and physical units. In particular, we derived a relation 
 
 One needs to recognise that there are in fact three relevant timescales when performing molecular dynamics simulations. Firstly, the length scale $\sigma$, the mass $m$, and the energy $\hat{\epsilon}$ give rise to a natural simulation unit called the Lennard Jones time unit :
 \begin{eqnarray}
 \tau_{LJ} = \sqrt{\frac{m\sigma}{\hat{\epsilon}}}
 \end{eqnarray}
+This is in fact the simulation time unit used in LAMMPS.
 
 \section{Additional Figures}
 \subsection{Reproducing Results Reported by Dodd \etal}
 \label{app:doddresult}
-
+\begin{figure}[h]
+\centering
+\includegraphics[width=14cm]{\DataFig/dodd_paper/dodd.pdf}
+\caption{Probability distribution of finding $N_b$ number of beads in state $q = 3$ in a chain of $M = 60$ beads for four different feedback-to-noise ratio $f$: (a) 0.4, (b) 1.0, (c) 1.4, and (d) 2.0.}
+\label{fig:dodd}
+\end{figure}
+\FloatBarrier
 
 \section{Accessing the Source Code}
 \label{app:code}
+\subsection{Downloading the Source Code}
+The source code is available for download from GitHub and can be accessed by the following link:~\url{https://github.com/mchchiang/epigenetics}. The following is the procedure to clone the source code:
+\begin{enumerate}
+\item Open terminal and navigate to the desired directory where the code will be stored
+\item Enter the following command to clone the code from GitHub:
+\begin{lstlisting}
+git clone https://github.com/mchchiang/epigenetics.git
+\end{lstlisting}
+\end{enumerate}
+
+\subsection{Compiling the Source Code}
+\begin{enumerate}
+\item Navigate to the directory \texttt{../dna\_epigenetics/Java/} in the source code package.
+\item To compile the source code only (without the test cases), enter the command:
+\begin{lstlisting}
+ant compile
+\end{lstlisting}
+The compiled code will be located at \texttt{../Java/build/classes/dna\_epigenetics}.
+%\item To compile both the source code and the test cases, enter this command (N.B. the~\texttt{JUnit4} library must be installed on the machine for this to work):
+%\begin{lstlisting}
+%ant compile
+%ant compile test
+%\end{lstlisting}
+%The compiled unit tests will be located at \texttt{../Java/build/tests/dna\_epigenetics}.
+\end{enumerate}
+
+\subsection{Running the Program}
+Running the program would require LAMMPS to be installed on the machine. The details for download and installing LAMMPS can be found here:~\url{http://lammps.sandia.gov/}. The following is the procedure for a simulation trial as conducted in the report:
+\begin{enumerate}
+\item Navigate to the root directory of the source code package
+\item Copy the compiled epigenetic Java code to a new directory (e.g. \texttt{../dna\_epigenetics/trial/} by issuing the following commands
+\begin{lstlisting}
+mkdir trial
+cp -r Java/build/classes/dna_epigenetics trial
+\end{lstlisting}
+\item Copy the 
+\item Execute the \texttt{init.sh} bash script, .i.e.
+\begin{lstlisting}
+bash init.sh <args>
+\end{lstlisting}
+The arguments that need to be specified for this code to run is as follows:
+\begin{enumerate}[i]
+\item simulation box size $L$
+\item number of beads $M$ in the modelled chromatin chain
+\item feedback-to-noise ratio $f$
+\item interaction energy between like-colour beads $\epsilon$
+\item fraction of beads being bookmarks $\phi$
+\item the cluster size $n_c$ for the cluster method
+\end{enumerate}
+Running this script will produce a LAMMPS configuration file along with a set of data files to be used during the simulation.
+\item The actual simulation can be 
+\end{enumerate}
 

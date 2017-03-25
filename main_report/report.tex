@@ -55,6 +55,8 @@
 \usepackage{float}
 \usepackage[version=4]{mhchem}
 \usepackage[]{cite}
+\usepackage{caption}
+\usepackage{enumerate}
 
 \newcommand*{\DataFig}{/Users/MichaelChiang/Desktop/epigenetics_data/}
 \renewcommand{\vec}[1]{\bm{#1}}
@@ -62,6 +64,12 @@
 \newcommand{\inc}{\Delta}
 \newcommand{\etal}{\emph{et al.}}
 \renewcommand{\O}[1]{\mathcal{O}(#1)}
+
+\lstset{%language=bash,
+	basicstyle={\ttfamily},
+	%keywordstyle=\color{blue},
+	%commentstyle=\color{codegreen},
+	tabsize = 4}
 
 \begin{document}
 
@@ -81,9 +89,23 @@ The abstract is a short concise outline of your project area, {\bf of no more th
 
 % This command introduces the Personal Statement
 \personalstatement
-I spent the first week of the project reading the paper by Dodd et. al. and created a computer program of the model. In the second week, I wrote unit tests for the program to ensure that it implements the model correctly, and I successfully reproduced the results reported by Dodd et. al. Over the next two weeks, I focused on learning the Large Scale Atomic and Molecular (LAMMPS). I worked through tutorials provided by my supervisor on LAMMPS and familiarise myself with the key commands that I will be using.  During this period, I also spent some time reading about the biological 
+I spent the first week of the project reading the paper by Dodd \etal~which discusses the epigenetic model that I will be using. I created a computer program of the model in Java. In the second week, I wrote unit tests for the program to ensure that it implements the model correctly, and I successfully reproduced the results reported by Dodd \etal
 
-During Christmas holidays, I moved . At the mean time, I continued 
+Over the next two weeks, I focused on learning how to use the Large-scale Atomic/Molecular Massively Parallel Simulator (LAMMPS), which was used in the project to perform molecular dynamics simulation of the chromatin fibre. I worked through tutorials provided by my supervisor on LAMMPS and familiarised myself with the key commands that I would be using. Since the project focuses on simulating the dynamics of chromosome, which is a complex polymer, I spent some time reading about the statistical physics behind polymer chains. This helped me to understand the meaning behind some of the potentials that are used in modelling the chromatin fibre. 
+
+I spent week 5 and 6 developing the code required to couple between the Java code for the epigenetic model and LAMMPS. This was not a simple task as the documentation for the specific formats of how LAMMPS outputs data is sparse. Apart from developing the code, I spent some time reading about the properties and structures of chromosomes and the different types of epigenetic modification mechanisms. Reading the literature allowed me understand the biological motivations and justifications of the simulation model that I have been using. 
+
+By week 7 I have a comprehensive set of code for running simulations. I spent some time exploring the model parameters, $f$ and $\epsilon$, to identify the possible phases of the system and the regions where transitions occur. I spent the next few weeks studying the transition between the swollen-disordered (SD) and compact-disordered (CD) phase and that between the swollen-disordered (SD) and compact-ordered (CO) phase. During this process, I fine-tuned the choice of parameters and the methodology for performing the simulations. By the end of the semester, I had preliminary results that the SD to CD transition is second-order, while th
+
+Over Christmas holidays, I took advantage of the availability of the computing resources in the lab and performed a bulk section of the simulation work. I mapped out the phases of the system within the parameter space of interest. This process took nearly two weeks as multiple simulations have to be performed for each point in the phase space. The produced phase diagrams are particularly essential for pinpointing the location of the phase transitions and understanding the relations between different phases. I conti
+
+I continued my study of the SD to CO transition during the first three weeks of the second semester.  This proved to be more challenging than I thought as finite size effects hindered the clarity of the transition order. This was further complicated by computing problems such as disc I/O errors on the network drives. It was only after performing some very long simulations on hysteresis effects of the system that I was able to conclude the SD to CO transition is first-order-like, while the SD to CD transition is second-order-like.
+
+Apart from studying these transitions, I have also spent time modifying the simulation code to allow the placements of bookmarks (beads with a static epigenetic colour) to investigate how to form epigenetic domains. 
+
+I spent week 4 and 5 of the semester investigating the different methods of assigning bookmarks on the chromatin fibre that can give rise 
+
+I used the remaining time of the semester analysing the simulation data that I had obtained and completing the project report.
 
 
 % This command inserts a table of contents, and sets things up for the main text of your report.
@@ -117,26 +139,30 @@ The remaining sections of the report are as follows: Section 2 provides an overv
 \pagebreak
 \begin{figure}[h]
 \centering
-\includegraphics[height = 11cm]{figure/chromatin.jpg}
-\caption{An illustration of how the DNA is packaged into a chromosome. The DNA compacts itself by coiling around groups of histone proteins to form nucleosomes. These nucleosomes associate with each other to form the chromatin fibre. The fibre condenses itself further to form the chromosome.}
+\includegraphics[width=\textwidth]{figure/chromosome.pdf}
+\caption{Illustrations of how the DNA is packaged into a chromosome. The DNA compacts itself by coiling around groups of histone proteins (the histone octamer) to form nucleosomes (a) in a ``beads-on-a-string'' structure (b). These nucleosomes associate with each other to form the chromatin fibre. The fibre condenses itself further by folding into loops to form the chromosome. Figures taken and adapted from Ref.~\cite{molcellbiobook}.}
 \label{fig:chromosome}
 \end{figure}
 \section{Background}
-%Here you would expand on the general background to the project. This might include important observations, experiments or conceptual developments in the field. You may also wish to discuss related approaches that have been taken to solve the problem that your project concerns. Make sure you describe your understanding of the relevant literature in your own words, and include references to the relevant sources. One way to manage this is to enter your references into a {\tt BibTeX} file, as this will automatically number and format your references in a standardised way  (see Appendix~\ref{sec:bibtex} for details).  This allows easy numbered referencing of references. 
-%The most appropriate sources at the MPhys level will be papers in scientific journals \cite{jr:ashkin} and conference proceedings \cite{seger}, as well as textbooks covering intermediate or advanced level material \cite{ob:bornwolf}. If you are building on the work of former MPhys \cite{mphys:renton} or PhD \cite{phd:blythe} students, you might need to cite their theses/reports as well. For more general background, readable articles in popular science journals \cite{jr:dholakia}, and  standard textbooks \cite{ob:hechtoptics} may be included.
-
 \subsection{DNA and Chromosome}
-To fully appreciate the discussion on epigenetic modifications and the simulation work performed in this project, it is important to understand how the DNA is stored within a (eukaryotic) cell. The DNA is located within the cell nucleus and is organised into highly compact structures called chromosomes. At the elementary level, the DNA is packaged into nucleosomes, similar to a ``beads-on-a-string'' structure (see figure~\ref{fig:chromosome}). The core of each nucleosome is the histone octamer, which contains two copies of four kinds of histone proteins: H2A, H2B, H3, H4. The octamer is wrapped around by roughly 150 base pairs (bp) of DNA sequence. There are approximately 50 bp of DNA between two nucleosomes, and the H1 histone protein binds to this region~\cite{DNABook}. The nucleosomes organise themselves into higher order structures by associating with each other to form the chromatin fibre. The fibre compacts itself further by mechanisms such as forming loops and rosettes~\cite{brackley2016}. It is only during cell division (metaphase specifically) that the fibre condenses to the X-shape structure to prepare for the separation of the genetic materials.  
+To fully appreciate the discussion on epigenetic modifications and the simulation work performed in this project, it is important to understand how the DNA is stored within a (eukaryotic) cell. The DNA is located within the cell nucleus and is organised into highly compact structures called chromosomes. At the elementary level, the DNA is packaged into nucleosomes, similar to a ``beads-on-a-string'' structure (see Fig.~\ref{fig:chromosome}). The core of each nucleosome is the histone octamer, which contains two copies of four kinds of histone proteins: H2A, H2B, H3, H4. The octamer is wrapped around by roughly 150 base pairs (bp) of DNA sequence. There are approximately 50 bp of DNA between two nucleosomes, and the H1 histone protein binds to this region~\cite{DNABook, molcellbiobook}. The nucleosomes organise themselves into higher order structures by associating with each other to form the chromatin fibre. The fibre compacts itself further by mechanisms such as forming loops and rosettes~\cite{brackley2016}. It is only during cell division (metaphase specifically) that the fibre condenses to the X-shape structure to prepare for the separation of the genetic materials.  
 
 \subsection{Epigenetic Modifications}
 It is well known that the DNA contains all the instructions which govern the development and functions of a cell. Yet, it is also recognised that the genetic information encoded by the DNA does not completely determine a cell's identity. Cells with the same genome can have different physical characteristics, or different phenotypes, which are often heritable. Epigenetics is the study of heritable changes in the genetic activity which do not arise from the alteration of the DNA sequence\cite{DNABook, probst2009}. These changes are often associated with modifications to the chromosome. Two well-known types of epigenetic modifications, or ``epigenetic marks'', are DNA methylation and histone modifications. Both have significant influence on the biological functions of a cell by regulating its genetic expression -- whether a particular gene should be active or inactive. 
 
 \subsubsection{DNA Methylation}
-DNA methylation refers to the addition of the methyl group ($\ce{CH3}$) to a particular nucleotide, the basic unit of the genetic code, of the DNA. Most commonly, methylation occurs to the cytosine within the cytosine-guanine (CG or CpG) pair in the genetic sequence. Studies have shown that CpG methylation is related to various biological processes, such as transcriptional repression, X-chromosome suppression in female mammals, and cell specialisation during embryonic development~\cite{DNABook}. 
+DNA methylation refers to the addition of the methyl group ($\ce{CH3}$) to a particular nucleotide, the basic unit of the genetic code, of the DNA. Most commonly, methylation occurs to the cytosine within the cytosine-guanine (CG or CpG) pair in the genetic sequence. Studies have shown that CpG methylation is related to various biological processes, such as transcriptional repression, X-chromosome suppression in female mammals, and cell specialisation during embryonic development~\cite{DNABook, molcellbiobook}. 
 
 \subsubsection{Histone Modifications}
 \label{sec:histone}
-Histone modifications, which are the type of epigenetic mechanism of interest in this project, refer to the biochemical modifications that are applied to the histone proteins in the nucleosomes. As with other proteins, histones are composed of amino acids, which are the basic building blocks of any protein molecules. Histones adapt a structure such that it has an extended ``tail'' which tends to protrude from the chromatin fibre, and different functional groups can bind to specific amino acids within the tail~\cite{strahl2000}. Three common types of modifications are acetylation (addition of $\ce{CH3CO}$), methylation (addition of $\ce{CH3}$), and phosphorylation (addition of $\ce{PO4^{3-}}$). 
+Histone modifications, which are the type of epigenetic mechanism of interest in this project, refer to the biochemical modifications that are applied to the histone proteins in the nucleosomes. As with other proteins, histones are composed of amino acids, which are the basic building blocks of any protein molecules. Histones adapt a structure such that it has an extended ``tail'' which tends to protrude from the chromatin fibre, and different functional groups can bind to specific amino acids within the tail~\cite{strahl2000} (see Fig.~\ref{fig:histone}). Three common types of modifications are acetylation (addition of $\ce{CH3CO}$), methylation (addition of $\ce{CH3}$), and phosphorylation (addition of $\ce{PO4^{3-}}$). 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figure/histone-modification.pdf}
+\caption{Histone modifications. (a) An illustration of the nucleosome highlighting the extended tails of the histone proteins (coloured in green) where biochemical modifications can occur. (b) A catalogue of known types of modifications on specific amino acids (represented by their symbols) at the (N-terminal) tail of the histone proteins. For instance, the amino acid lysine (K) at the 4th position of the tail of histone H3 (H3K4) can be methylated. Notice that some amino acids can be methylated or acetylated but not both. Figures taken and adapted from Refs.~\cite{molcellbiobook, rosa2005}.}
+\label{fig:histone}
+\end{figure}
 
 Much research has been conducted on investigating how histone modifications affect gene expression and the structure of the chromatin fibre. Histone acetylation has been suggested to promote gene transcription and allow the chromatin fibre to adapt a more open configuration~\cite{shahbazian2007}. Methylation has been indicated to correlate with the silencing and activation of transcription, depending on the specific sites where the modification took place~\cite{greer2012}. Phosphorylation has been thought to regulate chromosome condensation during mitosis~\cite{sawicka2014}. It has also been considered that a specific effect on gene expression may be a result of multiple modifications (on multiple histones). This gives rise to the view that the modifications form a ``histone-code''~\cite{strahl2000} which controls various genetic activities.
 
@@ -146,7 +172,7 @@ The actual mechanisms by which functional groups are added and removed from hist
 \label{sec:establishment}
 A fundamental question which remains to be understood is how certain epigenetic patterns are established during development, and how these patterns are faithfully inherited from one generation of cells to the next. A classic example of the establishment and maintenance of epigenetic marks is the transcriptional silencing of one of the X-chromosomes in female mammalian cells, or X-chromosome inactivation~\cite{avner2001}. This silencing is important to avoid over-expression of genes in the X-chromosomes, which could be lethal. During early embryonic development, one of the two X-chromosomes is randomly inactivated in each cell, and the same chromosome remains inactive in all descendants of the cell. The actual inactivation process is achieved by the spreading of repressive epigenetic marks~\cite{heard2001, nicodemi2007}, causing the chromosome to condense into a transcriptionally silenced conformation known as a Barr body~\cite{avner2001}. 
 
-Models have been developed to study the mechanics behind the establishment and maintenance of epigenetic modifications~\cite{dodd2007, hathaway2012, zhang2014, jost2014}. Although these models can successfully describe some aspects of the spreading and retainment of epigenetic marks, they do not sufficiently capture the spatial organisation of the chromosome, which may be an important point to consider. It has been recognised that epigenetic patterns are closely related to the three dimensional (3D) conformation of the chromatin fibre. In particular, repressive epigenetic marks are associated with the fibre adapting a more compact conformation, whereas active marks are related to the fibre having a more opened configuration~\cite{cortini2016, shahbazian2007, hathaway2012}. This apparent connection between epigenetic modifications and chromatin dynamics leads to the hypothesis that there may be a strong feedback between the self-regulation of epigenetic patterns and the spatial configuration of the chromatin fibre.% It would be of interest to develop models which characterise this feedback.
+Models have been developed to study the mechanics behind the establishment and maintenance of epigenetic modifications~\cite{dodd2007, sneppen2008, hathaway2012, zhang2014, jost2014}. Although these models can successfully describe some aspects of the spreading and retainment of epigenetic marks, they do not sufficiently capture the spatial organisation of the chromosome, which may be an important point to consider. It has been recognised that epigenetic patterns are closely related to the three dimensional (3D) conformation of the chromatin fibre. In particular, repressive epigenetic marks are associated with the fibre adapting a more compact conformation, whereas active marks are related to the fibre having a more opened configuration~\cite{cortini2016, shahbazian2007, hathaway2012}. This apparent connection between epigenetic modifications and chromatin dynamics leads to the hypothesis that there may be a strong feedback between the self-regulation of epigenetic patterns and the spatial configuration of the chromatin fibre.% It would be of interest to develop models which characterise this feedback.
 
 \subsubsection{``Read-Write'' Mechanism}
 \label{sec:read-write}
@@ -155,20 +181,22 @@ A possible method to achieve the feedback is by the ``read-write'' mechanism. It
 There are multiple examples which support this mechanism. For instance, regions along the DNA strand that are actively transcribed are thought to be modified by certain active epigenetic marks, such as the methylation of lysine 4 in histone H3 (H3K4)~\cite{zentner2013}. During the transcription process, the RNA polymerase attaches to a DNA strand to create a messenger RNA copy of the strand. The polymerase attracts the enzymes Set1 and Set2, which are methyltransferases (HMTs) that catalyses the methylation of H3K4~\cite{zentner2013, ruthenburgh2007}. One can, therefore, view the polymerase as the ``reader'', and Set1 and Set2 as the ``writers''. Another example occurs within the heterochromatin, a region within the chromatin fibre that is tightly packed with few active genes and is associated with a higher concentration of methylated marks, such as the methylation of H3K9. It is known that the heterochromatin binding protein HP1, acting as the ``reader'', would recruit the methyltransferase SUV39H, the ``writer'', which facilitates the methylation of H3K9 along the chromatin fibre~\cite{zentner2013}.
 
 \subsubsection{\emph{De-Novo} Establishment of Epigenetic Domains}
+\label{sec:bookmark}
+\subsection{Recent Advances in Modelling Epigenetic Modifications}
+Recently, the simulation work by Michieletto \etal~\cite{michieletto2016} provided a more comprehensive modelling and analysis of the ``read-write'' mechanism. Their simulations couple a polymer model that describes the 3D chromatin folding dynamics with a Potts-like model that regulates epigenetic changes on the chromatin.  By allowing monomers, which represent coarse-grained nucleosomes, to change between three possible epigenetic states via the standard Metropolis algorithm, and by introducing a finite attractive interaction potential between modified monomers of the same state (to model binding by the ``reader'' enzyme), they found the system exhibits a first-order-like transition between a compact, epigenetically ordered and a swollen, epigenetically disordered configuration. They suggested that this form of transition naturally allows the stable establishment and preservation of epigenetic states, because the system retains memory of its epigenetic patterns due to hysteresis effects. They further demonstrated that the model allows long-lived, metastable domains of different epigenetic states when the system is out of equilibrium, where the effective temperatures for the chromatin dynamics and the epigenetic modifications are different. 
 
-\subsection{Motivation of the Study}
-Recently, the simulation work by Michieletto \etal~\cite{michieletto2016} provided a more comprehensive modelling and analysis of the ``read-write'' mechanism. Their simulations couple a polymer model that describes the 3D chromatin folding dynamics with a Potts-like model that regulates epigenetic changes on the chromatin.  By allowing monomers, which represent coarse-grained nucleosomes, to change between three possible epigenetic states via the standard Metropolis algorithm, and by introducing a finite attractive interaction potential between modified monomers of the same state (to model binding by the ``reader'' enzyme), they found the system exhibits a first-order-like transition between a compact, epigenetically ordered and a swollen, epigenetically disordered configuration. They suggested that this form of transition naturally allows the stable establishment and preservation of epigenetic states, because the system retains memory of its epigenetic patterns due to hysteresis effects. They further demonstrated that the model allows long-lived, metastable domains of different epigenetic states when the effective temperatures for the chromatin dynamics and the epigenetic modifications are different. 
+This simulation work demonstrated that coupling epigenetic modifications with chromatin folding does provide a reliable mean for epigenetic patterns to form and sustain. It would be of interest to investigate whether other biologically-motivated 1D epigenetic models would allow stable establishment and maintenance of epigenetic marks when explicitly coupled with 3D chromatin dynamics. This would provide further support for the ``read-write'' mechanism. In particular, as point
 
-This simulation work demonstrated that coupling epigenetic modifications with chromatin folding does provide a reliable mean for epigenetic patterns to form and sustain. It would be of interest to investigate whether other biologically-motivated 1D epigenetic models would allow stable establishment and maintenance of epigenetic marks when explicitly coupled with 3D chromatin dynamics. This would provide further support for the ``read-write'' mechanism. With this in mind, the project focuses on combining a well known 1D epigenetic model proposed by Dodd \etal~\cite{dodd2007} with a polymer model that simulates the 3D dynamics of the chromatin fibre, similar to that used in reference~\cite{brackley2013, michieletto2016}. There are two main objectives to the project: Firstly, we wish to identify the possible configurations (or phases) of the system within the combined model and to characterise the nature of the transitions between these phases. This would give indications of whether epigenetic patterns can be reliably established and sustained within the model. Secondly, we wish to extend the model to investigate possible mechanisms that would allow the stable formation and sustainment of multiple epigenetic domains along the chromatin fibre. 
+With this in mind, the project focuses on combining a well known 1D epigenetic model proposed by Dodd \etal~\cite{dodd2007} with a polymer model that simulates the 3D dynamics of the chromatin fibre, similar to that used in Refs.~\cite{brackley2013, michieletto2016}. There are two main objectives to the project: Firstly, we wish to identify the possible configurations (or phases) of the system within the combined model and to characterise the nature of the transitions between these phases. This would give indications of whether epigenetic patterns can be reliably established and sustained within the model. Secondly, we wish to extend the model to investigate possible mechanisms that would allow the stable formation and sustainment of multiple epigenetic domains along the chromatin fibre. 
 \pagebreak
 \section{Methods}
 \subsection{Simulation Model}
 We model the chromatin fibre as a semi-flexible ``bead-and-spring'' polymer of $M$ beads~\cite{kremer1990}. In line with common mappings employed in simulating chromatin dynamics~\cite{rosa2008, mirny2011, brackley2016, michieletto2016}, each bead has a diameter of $\sigma = 30$ nm and represents roughly 3 kbp, which corresponds to around 15 nucleosomes. Each bead is also assigned a ``colour'' $q$ to represent a particular epigenetic modification. Unless otherwise stated, we assume that there are three colours ($q \in \{1, 2, 3\}$), corresponding to the following modifications: acetylated, unmarked, and methylated. These could also be viewed more generally as an active, unmodified, and inactive epigenetic marks respectively.
 
 \subsubsection{Modelling Dynamics of the Chromatin Fibre}
-We simulate the dynamics of the chromatin fibre by performing molecular dynamics (MD) simulations. We model the chromatin fibre to be submerged in a solvent (i.e. a thermal bath), which could represent the nucleoplasm. In particular, we only model explicitly the interactions between the monomers of the fibre; we include a stochastic force acting on each monomer to implicitly account for the random collisions between the (much smaller) solvent particles and the monomers (see equation~\ref{eqn:EOM} presented later in the section). This type of simulation is often referred as Brownian dynamics simulation.
+We simulate the dynamics of the chromatin fibre by performing molecular dynamics (MD) simulations. We model the chromatin fibre to be submerged in a solvent (i.e. a thermal bath), which could represent the nucleoplasm. In particular, we only model explicitly the interactions between the monomers of the fibre; we include a stochastic force acting on each monomer to implicitly account for the random collisions between the (much smaller) solvent particles and the monomers (see Eq.~\ref{eqn:EOM} presented later in the section). This type of simulation is often referred as Brownian dynamics simulation.
 
-As commonly conducted in MD simulations, we express properties of the system in multiples of unit-less, fundamental quantities. Energies are expressed in units of  $\hat{\epsilon} = k_BT$, where $k_B$ is the Boltzmann constant and $T$ is the temperature of the thermal bath. Distances are expressed in units of $\sigma$, which, as defined above, is the diameter of the bead. Further, time is expressed in terms of the Brownian time $\tau_{Br}$, which is the typical time for a bead to diffuse a distance of its size -- more precisely, $\tau_{Br} = \sigma^2/D$, where $D$ is the diffusion constant for the bead (see section~\ref{sec:mapping} for a more detailed discussion).
+As commonly conducted in MD simulations, we express properties of the system in multiples of fundamental quantities. Energies are expressed in units of  $\hat{\epsilon} = k_BT$, where $k_B$ is the Boltzmann constant and $T$ is the temperature of the thermal bath. Distances are expressed in units of $\sigma$, which, as defined above, is the diameter of the bead. Further, time is expressed in terms of the Brownian time $\tau_{Br}$, which is the typical time for a bead to diffuse a distance of its size -- more precisely, $\tau_{Br} = \sigma^2/D$, where $D$ is the diffusion constant for the bead (see section~\ref{sec:mapping} for a more detailed discussion).
 
 The interactions between the beads of the fibre are governed by several potentials that are standard in polymer physics. Firstly, there is a truncated and shifted Lennard-Jones (LJ) potential acting between any two consecutive beads given by:
 \begin{eqnarray}
@@ -188,7 +216,7 @@ where $R_0$ is the maximum separation between beads and $K_f$ is the strength of
 \begin{eqnarray}
 U_{bend}(\theta) = K_b\left[1-\cos\theta\right],
 \end{eqnarray}
-where $\theta$ is the angle formed by any three consecutive beads along the fibre (see figure~\ref{fig:bending}) and is given by
+where $\theta$ is the angle formed by any three consecutive beads along the fibre (see Fig.~\ref{fig:bending}) and is given by
 \begin{eqnarray}
 \cos \theta = \frac{\bm{r}_i - \bm{r}_{i-1}}{\abs{\bm{r}_i - \bm{r}_{i-1}}} \cdot \frac{\bm{r}_{i+1} - \bm{r}_i}{\abs{\bm{r}_{i+1} - \bm{r}_i}},
 \end{eqnarray}
@@ -210,7 +238,7 @@ U_{LJ}^{ij}(r_{ij}) = \left\{
 	\end{array}
 \right.
 \end{eqnarray}
-where $r_{ij} \equiv \abs{\bm{r}_j - \bm{r}_i}$ is the separation between the $i$th and the $j$th bead. When the beads have different colours, or when one or more of the beads are unmodified (i.e. $q_i \neq q_j$, or $q_i$ or $q_j = 2$), we set $\epsilon_{q_iq_j} = k_BT$ and $r_c^{q_iq_j} = 2^{1/6}\sigma$ to model pure repulsion between the beads. When both beads are modified and have the same colour ($q_i = q_j$ and $q_i, q_j \neq 2$), we set $\epsilon_{q_iq_j}= \epsilon\,k_BT$ and $r_c^{q_iq_j} = R > 2^{1/6}\sigma$ to model self-attraction caused by the ``reader'' enzyme. $R$ sets the cut-off distance, or the maximum distance that a modified bead will feel an attraction from another bead with the same colour. It corresponds to the effective interaction distance of the ``reader'' enzyme with the chromatin. We choose $R = 2.5\sigma$ for the attractive force between beads to be effective, and this value is similar to that considered in reference~\cite{michieletto2016}. On the other hand, $\epsilon$ governs the strength of the attraction between like-colour beads, which corresponds to the likelihood of binding of the ``reader'' enzyme. It is one of the parameters which we vary in the simulation to explore the possible configurations of the fibre within the model.
+where $r_{ij} \equiv \abs{\bm{r}_j - \bm{r}_i}$ is the separation between the $i$th and the $j$th bead. When the beads have different colours, or when one or more of the beads are unmodified (i.e. $q_i \neq q_j$, or $q_i$ or $q_j = 2$), we set $\epsilon_{q_iq_j} = k_BT$ and $r_c^{q_iq_j} = 2^{1/6}\sigma$ to model pure repulsion between the beads. When both beads are modified and have the same colour ($q_i = q_j$ and $q_i, q_j \neq 2$), we set $\epsilon_{q_iq_j}= \epsilon\,k_BT$ and $r_c^{q_iq_j} = R > 2^{1/6}\sigma$ to model self-attraction caused by the ``reader'' enzyme. $R$ sets the cut-off distance, or the maximum distance that a modified bead will feel an attraction from another bead with the same colour. It corresponds to the effective interaction distance of the ``reader'' enzyme with the chromatin. We choose $R = 2.5\sigma$ for the attractive force between beads to be effective, and this value is similar to that considered in Ref.~\cite{michieletto2016}. On the other hand, $\epsilon$ governs the strength of the attraction between like-colour beads, which corresponds to the likelihood of binding of the ``reader'' enzyme. It is one of the parameters which we vary in the simulation to explore the possible configurations of the fibre within the model.
 
 The time evolution of each bead along the fibre is governed by the following Langevin equation:
 \begin{eqnarray}
@@ -221,11 +249,11 @@ where $m_i$ and $\gamma_i$ are the mass and the friction coefficient of bead $i$
 \begin{eqnarray}
 \langle\bm{\eta}(t)\rangle = 0;\;\;\; \langle\eta_{i,\alpha}(t)\eta_{j,\beta}(t')\rangle = \delta_{ij}\delta_{\alpha\beta}\delta(t-t'),
 \end{eqnarray}
-where the Latin indices represent particle indices and the Greek indices represent Cartesian components. The last term of equation~\ref{eqn:EOM} represents the random collisions caused by the solvent particles. For simplicity, we assume all beads have the same mass and friction coefficient (i.e. $m_i = m$ and $\gamma_i = \gamma $). We also set $m = \gamma = k_B = T = 1$. The Langevin equation is integrated using the standard velocity-Verlet integration algorithm\footnote{See appendix~\ref{app:velocity-verlet} for specific details of this algorithm.}, which is performed using the large-scale atomic/molecular massively parallel simulator (LAMMPS)\footnote{See \url{http://lammps.sandia.gov} for more information about this molecular dynamics simulator.}. For the simulation to be efficient yet numerically stable, we set the integration time step to be $\Delta t = 0.01\,\tau_{Br}$, where $\tau_{Br}$ is the Brownian time mentioned previously.
+where the Latin indices represent particle indices and the Greek indices represent Cartesian components. The last term of Eq.~\ref{eqn:EOM} represents the random collisions caused by the solvent particles. For simplicity, we assume all beads have the same mass and friction coefficient (i.e. $m_i = m$ and $\gamma_i = \gamma $). We also set $m = \gamma = k_B = T = 1$. The Langevin equation is integrated using the standard velocity-Verlet integration algorithm\footnote{See App.~\ref{app:velocity-verlet} for specific details of this algorithm.}, which is performed using the large-scale atomic/molecular massively parallel simulator (LAMMPS)\footnote{See \url{http://lammps.sandia.gov} for more information about this molecular dynamics simulator.}. For the simulation to be efficient yet numerically stable, we set the integration time step to be $\Delta t = 0.01\,\tau_{Br}$, where $\tau_{Br}$ is the Brownian time mentioned previously.
 
 \subsubsection{Modelling Epigenetic Modifications}
 \label{sec:recolouring}
-We simulate the epigenetic modifications of the chromatin fibre based on the 1D model proposed by Dodd \etal~\cite{dodd2007}. This model, in turn, is inspired by the observations that there are modifying and de-modifying enzymes (HATs, HMTs, HDACs, HDMs) which change the epigenetic marks on the histone tails (see section~\ref{sec:histone}). We modify the epigenetic mark, or colour, of the beads every $\tau_{colour} = 10\,\tau_{Br}$ (i.e. a recolouring step). This time choice allows the system to explore enough spatial configurations between recolouring moves while keeping the simulation efficient\footnote{We note that recolouring was conducted every $10^3~\tau_{Br}$ in reference~\cite{michieletto2016}. We found that using longer recolouring times, such as $10^3~\tau_{Br}$, has negligible effects on the steady-state dynamics of the system; however, the increase in the interval between recolouring reduces the number of epigenetic configurations sampled by the system and less data can be obtained from a simulation, hence a shorter recolouring time is used.}. In each recolouring step, we conduct $M$ attempts of colour conversion such that each bead, on average, receives a single conversion attempt. The procedure of a specific conversion attempt is as follows: 
+We simulate the epigenetic modifications of the chromatin fibre based on the 1D model proposed by Dodd \etal~\cite{dodd2007}. This model, in turn, is inspired by the observations that there are modifying and de-modifying enzymes (HATs, HMTs, HDACs, HDMs) which change the epigenetic marks on the histone tails (see section~\ref{sec:histone}). We modify the epigenetic mark, or colour, of the beads every $\tau_{colour} = 10\,\tau_{Br}$ (i.e. a recolouring step). This time choice allows the system to explore enough spatial configurations between recolouring moves while keeping the simulation efficient\footnote{We note that recolouring was conducted every $10^3~\tau_{Br}$ in Ref.~\cite{michieletto2016}. We found that using longer recolouring times, such as $10^3~\tau_{Br}$, has negligible effects on the steady-state dynamics of the system; however, the increase in the interval between recolouring reduces the number of epigenetic configurations sampled by the system and less data can be obtained from a simulation, hence a shorter recolouring time is used.}. In each recolouring step, we conduct $M$ attempts of colour conversion such that each bead, on average, receives a single conversion attempt. The procedure of a specific conversion attempt is as follows: 
 \begin{enumerate}
 \item A bead $n_1$ to be modified is first selected from the fibre. It either undergoes a recruited conversion attempt (Step 2), with probability $\alpha$, or a noisy conversion attempt (Step 3), with probability $1 - \alpha$.
 
@@ -259,7 +287,7 @@ U_{soft}(r_{ij}) = \left\{
 	\end{array}
 	\right.
 \end{eqnarray}
-with $r_c = 2^{1/6}\sigma$ is the cut-off distance and $A$ is the maximum of the potential, which is set to $100\hat{\epsilon}$. This potential has the advantage that it remains bound as $r_{ij}$ goes to zero and, therefore, does not generate numerical divergence when pushing the monomers apart. We revert to the WCA potential, as specified in equation~\ref{eqn:WCA} (but acting between any beads), for the remaining of the equilibration period. Unless otherwise stated, the main simulation period is $10^6\,\tau_{Br}$, and we make measurements of the system's properties once it reaches a steady-state, which takes approximately $3\times10^4\,\tau_{Br}$.
+with $r_c = 2^{1/6}\sigma$ is the cut-off distance and $A$ is the maximum of the potential, which is set to $100\hat{\epsilon}$. This potential has the advantage that it remains bound as $r_{ij}$ goes to zero and, therefore, does not generate numerical divergence when pushing the monomers apart. We revert to the WCA potential, as specified in Eq.~\ref{eqn:WCA} (but acting between any beads), for the remaining of the equilibration period. Unless otherwise stated, the main simulation period is $10^6\,\tau_{Br}$, and we make measurements of the system's properties once it reaches a steady-state, which takes approximately $3\times10^4\,\tau_{Br}$.
 
 \subsubsection{Mapping between Simulation and Physical Units}
 \label{sec:mapping}
@@ -271,7 +299,7 @@ where we have assumed that each bead diffuses like a sphere and applied Stoke's 
 \begin{eqnarray}
 \tau_{Br} = \frac{3\pi\eta\sigma^3}{k_BT}.
 \end{eqnarray}
-As discussed in reference~\cite{brackley2013}, if the nucleoplasm has a viscosity $\eta \sim 10$ cP, one Brownian time maps to approximately 1 ms. A simulation of $10^6\,\tau_{Br}$ therefore corresponds to $\sim16$ min in real life\footnote{See appendix~\ref{app:timescale} for the subtleties in mapping between simulation and physical scales.}.
+As discussed in Ref.~\cite{brackley2013}, if the nucleoplasm has a viscosity $\eta \sim 10$ cP, one Brownian time maps to approximately 1 ms. A simulation of $10^6\,\tau_{Br}$ therefore corresponds to $\sim16$ min in real life\footnote{See App.~\ref{app:timescale} for the subtleties in mapping between simulation and physical timescales.}.
 
 \subsection{Model Implementation and Program Structure}
 We implemented the coupled model of the 3D spatial dynamics of the chromatin fibre and the epigenetic modifications using several software. As mentioned above, the time evolution of the spatial dynamics of the fibre was computed using LAMMPS. This was coupled to a Java code that performs epigenetic modifications at every recolouring interval (i.e. $10~\tau_{Br}$), according to rules specified above in section~\ref{sec:recolouring}. The visualisations of the chromatin fibre presented in this report were produced with the support of the Visual Molecular Dynamics (VMD) software~\cite{humphrey1996}.
@@ -283,31 +311,37 @@ We implemented the coupled model of the 3D spatial dynamics of the chromatin fib
 \label{fig:uml}
 \end{figure}
 
-We briefly discuss the program structure of the epigenetic code, as summarised by the UML diagram in figure~\ref{fig:uml}. The \texttt{DNAModel} class contains the computational logic for modifying the epigenetic colour of the beads. The \texttt{LAMMPSIO} class is responsible for the coupling between the Java code and LAMMPS code. It reads and writes the configuration file that is passed by between both programs, which contains the information about each baed's position and epigenetic colour. It computes the pairwise distance between beads, taken into account of periodic boundaries, that is needed for \texttt{DNAModel} to perform recolouring. This is done with the help of the \texttt{Vector} class, which contains elementary operations for vectors. \texttt{LAMMPSIO} is also responsible for generating the initial configuration of the chromatin fibre. In addition, the program contains a group of data classes for outputting the measured statistical quantities of the system. 
+We briefly discuss the program structure of the epigenetic code, as summarised by the UML diagram in Fig.~\ref{fig:uml}. The \texttt{DNAModel} class contains the computational logic for modifying the epigenetic colour of the beads. The \texttt{LAMMPSIO} class is responsible for the coupling between the Java code and LAMMPS code. It reads and writes the configuration file that is passed by between both programs, which contains the information about each baed's position and epigenetic colour. It computes the pairwise distance between beads, taken into account of periodic boundaries, that is needed for \texttt{DNAModel} to perform recolouring. This is done with the help of the \texttt{Vector} class, which contains elementary operations for vectors. \texttt{LAMMPSIO} is also responsible for generating the initial configuration of the chromatin fibre. In addition, the program contains a group of data classes for outputting the measured statistical quantities of the system. 
 
 The actual coupling of the epigenetic program and LAMMPS is outlined herein. The simulations are run within LAMMPS. At every recolouring step, LAMMPS generates a configuration file containing the latest positions and epigenetic information of the beads and calls the Java program to perform recolouring. The program interprets the configuration file and modify the beads according to the rules discussed. After which, it overwrites the configuration file with the new epigenetic information. LAMMPS then use the updated epigenetic colours to compute the spatial dynamics of fibre over time until the next recolouring step.
 
-For more information about the program structure and for accessing the source code, please consult appendix~\ref{app:code}. A detailed set of procedures is provided there for compiling the source code and how to couple it with LAMMPS.
+For more information about the program structure and for accessing the source code, please consult App.~\ref{app:code}. A detailed set of procedures is provided there for compiling the source code and how to couple it with LAMMPS.
 
 \FloatBarrier
 \subsection{Testing}
-As with any computational experiments, it is important to validate the program's correctness before using it to perform simulations. Given that the LAMMPS software is heavily tested and simulation results generated by it have been published in many scientific peer-reviewed journals, we mainly focused on validating the code for epigenetic modifications. We tested the code using several approaches. We wrote unit tests for methods within the program, and they are all satisfied. Apart from unit testing, we compared the results obtained from the program with those reported by Dodd \etal~\cite{dodd2007}. We were able to reproduce the steady-state dynamics mentioned in their paper. Specifically, we obtained comparable numerical results for the probability distribution of the number of beads in the methylated state for all feedback-to-noise ratios that they have considered (see figures in appendix~\ref{app:doddresult} and figure 2 in~\cite{dodd2007}). These tests demonstrate that the program is reliable and robust and gives confidence to the obtained simulation results. 
+As with any computational experiments, it is important to validate the program's correctness before using it to perform simulations. Given that the LAMMPS software is heavily tested and simulation results generated by it have been published in many scientific peer-reviewed journals, we mainly focused on validating the code for epigenetic modifications. We tested the code using several approaches. We wrote unit tests for methods within the program, and they are all satisfied. Apart from unit testing, we compared the results obtained from the program with those reported by Dodd \etal~\cite{dodd2007}. We were able to reproduce the steady-state dynamics mentioned in their paper. Specifically, we obtained comparable numerical results for the probability distribution of the number of beads in the methylated state for all feedback-to-noise ratios that they have considered (see figures in App.~\ref{app:doddresult} and Fig. 2 in~\cite{dodd2007}). These tests demonstrate that the program is reliable and robust and gives confidence to the obtained simulation results. 
+
 \pagebreak
-\section{Results and Discussions}
-We now present the results obtained from the simulations. In the first half of this section, we focus on characterising the possible types of configuration or phases of the system in the coupled model. We analyse the transition order of the transitions between some of these phases that are of physical and biological interest. In the second half of the section, we present possible mechanisms that can lead to the establishment and coexistence of multiple domains of different epigenetic states.
+\section{Results}
+We now present the results obtained from the simulations. In the first half of this section, we focus on characterising the possible types of configuration or phases of the system in the coupled model. We analyse the transition order of the transitions between some of these phases that are of physical and biological interest. In the second half of the section, we present possible mechanisms for establishing and maintaining multiple domains of different epigenetic states.
 
 \subsection{System's Phases in the Simulation Model}
-As reported by Michieletto \etal~\cite{michieletto2016}, the coupling of the 3D dynamics of the chromatin fibre and the epigenetic modification of the beads allows the fibre to adapt at least two types of configurations: a swollen, epigenetically-disordered phase and a compact, epigenetically-ordered phase. By varying the two parameters -- the interaction energy between like-colour beads $\epsilon$ and the feedback-to-noise ratio $f$ -- we observe these two phases in the present model and, more strikingly, their counterparts: a compact, disordered phase and a swollen, ordered phase. Figure~\ref{fig:phases} shows the polymeric and epigenetic dynamics of simulation trials which highlight these four phases for $M = 1000$. The evolution of the epigenetic landscape over time is visualised by plotting a ``kymograph''~\cite{michieletto2016,brumley2014}, which shows the epigenetic colour of each bead.
+As reported by Michieletto \etal~\cite{michieletto2016}, the coupling of the 3D dynamics of the chromatin fibre and the epigenetic modification of the beads allows the fibre to adapt at least two types of configurations: a swollen, epigenetically-disordered phase and a compact, epigenetically-ordered phase. By varying the two parameters -- the interaction energy between like-colour beads $\epsilon$ and the feedback-to-noise ratio $f$ -- we observe these two phases in the present model and, more strikingly, their counterparts: a compact, disordered phase and a swollen, ordered phase. Fig.~\ref{fig:phases} shows the polymer and epigenetic dynamics of simulation trials which highlight these four phases for $M = 1000$. The evolution of the epigenetic landscape over time is visualised by plotting a ``kymograph''~\cite{michieletto2016,brumley2014}, which shows the epigenetic colour of each bead. 
 
-The existence of an epigenetically-ordered phase demonstrates that the model is capable of establishing and maintaining a single epigenetic domain, giving support to the ``read-write'' mechanism. Further, the simulation trial for the compact-ordered phase (figure~\ref{fig:phases}d) shows that a coherent domain can be formed quickly in less than $10^5\,\tau_{Br}$ after equilibration (where the fibre originally is swollen and disordered), which is faster than that observed in~\cite{michieletto2016}. This behaviour suggests that the model present here is more robust in establishing and sustaining domains than the model used in~\cite{michieletto2016}. The existence of a swollen-ordered phase indicates that it is possible to form a coherent domain without the need for the reader enzyme to connect far-apart sites with the same epigenetic colour in the context of a strong feedback (i.e. $f \ge 6$). The domain can be created by a gradual spreading of the same colour along the fibre (see figure~\ref{fig:phases}b). 
+The existence of an epigenetically ordered phase demonstrates that the model is capable of forming and maintaining a single epigenetic domain, giving support to the ``read-write'' mechanism. The epigenetic colour in the ordered phase varies between simulations. This is because the interaction strength is identical for different like-colour interactions (i.e. $1-1$ and $3-3$), so the colour is selected by breaking the $q = 1 \leftrightarrow 3$ symmetry. 
 
-\begin{figure}[t]
+The simulation trial for the compact-ordered phase (Fig.~\ref{fig:phases}d) shows that a coherent domain can be formed quickly in less than $5 \times10^4\,\tau_{Br}$ after equilibration. This contrasts with Ref.~\cite{michieletto2016}, where clusters of different colours can persist for a long time ($\sim5 \times 10^5\,\tau_{Br}$) before disappearing. It suggests that the model presented here is more robust in establishing and maintaining an epigenetic state. Further, the presence of a swollen-ordered phase indicates that it is possible to form a coherent domain without the need for the reader enzyme to connect far-apart sites with the same epigenetic colour in the context of a strong feedback (i.e. $f \ge 6$). The domain can be created by a gradual spreading of the same colour along the fibre (see Fig.~\ref{fig:phases}b).
+
+\pagebreak
+\begin{figure}[H]
 \centering
-%\includegraphics[width=\textwidth]{\DataFig/phases/phases.pdf}
-\includegraphics[width=\textwidth]{figure/phases.pdf}
-\caption{Simulation trials showing the four possible phases: (a) swollen-disordered, (b) swollen-ordered, (c) compact-disordered, and (d) compact-ordered. In each subfigure, the top panel shows snapshots of the 3D conformation of the chromatin fibre at the indicated time frames. The bottom panel is the ``kymograph''~\cite{brumley2014}, reporting the epigenetic colour of the beads within the fibre every $1000\,\tau_{Br}$ during the simulation. As mentioned previously, beads with $q = 1$ are coloured in red whereas those with $q = 3$ are coloured in blue; unmodified beads ($q = 2$) are coloured in grey.}
+\includegraphics[width=\textwidth]{\DataFig/phases/phases.pdf}
+%\includegraphics[width=\textwidth]{figure/phases.pdf}
+\caption{Simulation trials showcasing the four possible phases: (a) swollen-disordered, (b) swollen-ordered, (c) compact-disordered, and (d) compact-ordered. In each subfigure, the top panel shows snapshots of the 3D conformation of the chromatin fibre at the indicated time frames. The bottom panel is the ``kymograph''~\cite{brumley2014}, reporting the epigenetic colour of the beads within the fibre every $1000\,\tau_{Br}$ during the simulation. As mentioned previously, beads with $q = 1$ are coloured in red whereas those with $q = 3$ are coloured in blue; unmodified beads ($q = 2$) are coloured in grey.}
 \label{fig:phases}
 \end{figure}
+\pagebreak
+
 
 To further understand the relations between the four phases, we establish a phase diagram of the model in terms of the two parameters, $\epsilon$ and  $f$, by varying them systematically and by measuring the two physical properties (i.e. order parameters) which distinguish the phases: the spatial compactness of the chromatin fibre and the coherence of the epigenetic marks. We quantify the compactness of the fibre by measuring its radius of gyration $R_g$, which is given by
 \begin{eqnarray}
@@ -322,7 +356,6 @@ where $N_b(q,t)$ is the number of beads with colour $q$ at time $t$. The absolut
 \begin{eqnarray}
 m(t) = \frac{1}{M}\abs{N_b(q = 3, t) - N_b(q = 1, t)},
 \end{eqnarray}
-
 gives a suitable order parameter that distinguishes the disordered phase ($m \sim 0$) and the ordered phase ($m \sim 1$) when averaged over time and over simulations. As the epigenetic recolouring rules require a bead to transit through the unmodified state $(q = 2)$ when switching between the two marked states, $m$ would not reach 0 or 1 exactly due to the constant presence of beads with unmodified marks\footnote{One could also consider a ``normalised'' magnetisation $G = \abs{N_b(q = 3) - N_b(q = 1)}/(N_b(q=3)+N_b(q=1))$ which ignores the unmarked state, as used in~\cite{dodd2007}. We find using such quantity does not give rise to any qualitative difference. We decide to use $m$ instead of $G$ as the former is used in~\cite{michieletto2016} and we would like to compare our results with~\cite{michieletto2016}.}.  
 \begin{figure}[h]
 \centering
@@ -332,121 +365,123 @@ gives a suitable order parameter that distinguishes the disordered phase ($m \si
 \label{fig:phasediagram}
 \end{figure}
 
-Figure~\ref{fig:phasediagram} shows the phase diagram of the radius of gyration $R_g$ and that of the (absolute) epigenetic magnetisation $m$ when varying the two model parameters. These diagrams are created using a shorter chain ($M = 100$) to enhance sampling\footnote{We tested different system sizes $M$ and found that changing $M$ would shift the exact position of the transition but would not alter its general behaviour.}. The phase diagram for $R_g$ indicates that increasing $\epsilon$, the attraction energy between like-colour beads, causes the fibre to move from a swollen to a compact conformation. This behaviour is expected as a higher $\epsilon$ increases the likelihood of ``looping'', where beads separated by a long distance along the fibre come close together due to the colour interaction, which would condense the fibre. The diagram also suggests that there exists a critical attraction strength $\epsilon_c \sim 0.5$ below which the fibre does not collapse for any $f$. This behaviour is important as it supports the existence of a swollen-ordered phase. 
+Fig.~\ref{fig:phasediagram} shows the phase diagram of the radius of gyration $R_g$ and that of the (absolute) epigenetic magnetisation $m$ when varying the two model parameters. These diagrams are created using a shorter chain ($M = 100$) to enhance sampling\footnote{We tested different system sizes $M$ and found that changing $M$ would shift the exact position of the transition but would not alter its general behaviour.}. The phase diagram for $R_g$ indicates that increasing $\epsilon$, the attraction energy between like-colour beads, causes the fibre to move from a swollen to a compact conformation. This behaviour is expected as a higher $\epsilon$ increases the likelihood of ``looping'', where beads separated by a long distance along the fibre come close together due to the colour interaction, which would condense the fibre. The diagram also suggests that there exists a critical attraction strength $\epsilon_c \sim 0.5$ below which the fibre does not collapse for any $f$. This behaviour is important as it supports the existence of a swollen-ordered phase. 
 
 The phase diagram for $m$ also reflects expected results. Similar to how the epigenetic model behaves when uncoupled to spatial dynamics~\cite{dodd2007}, increasing $f$ causes the chromatin to switch from an epigenetically disordered phase to an ordered one. Although it is not clear whether there exists a minimum $f$ below which the epigenetic landscape would always remain incoherent, the diagram suggests that there is a critical feedback $f_c \sim 4.0$  above which the system is always epigenetically ordered. The phase diagram also shows that the transition between the disordered and the ordered phase becomes more gradual as $\epsilon$ decreases. This behaviour is reasonable as decreasing $\epsilon$ reduces the affinity between like-colour beads and the degree of looping. This reduction, in turn, lowers the effectiveness of the recruited conversion and the spreading of epigenetic marks, thus a large change in $f$ is needed to transit from the disordered to the ordered regime.
 
-We combine these two phase diagrams to identify the regions of the parameter space that correspond to each of the four observed phases. This is achieved by estimating the transition lines in the phase diagrams and superposing them together. For the epigenetic transition, we calculate the line based on the maxima of the variance of $m$, as large fluctuations are expected near the transition when the system varies between the ordered and the disordered phase. For the swollen-compact transition, it is not possible to estimate the line based on the variance of $R_g$ due to the small size of the chain. The fluctuations observed deep in the swollen phase are of the same order as those near the transition. We, therefore, compute the transition line using the contour at $R_g  = 6\sigma$, which is approximately half-way between the value measured in the swollen and the compact phase. Overlaying these transition lines on the phase diagrams shows that they capture well the boundary between the two regimes in each diagram (see figure~\ref{fig:phasediagram}).
+We combine these two phase diagrams to identify the regions of the parameter space that correspond to each of the four observed phases. This is achieved by estimating the transition lines in the phase diagrams and superposing them together. For the epigenetic transition, we calculate the line based on the maxima of the variance of $m$, as large fluctuations are expected near the transition when the system varies between the ordered and the disordered phase. For the swollen-compact transition, it is not possible to estimate the line based on the variance of $R_g$ due to the small size of the chain. The fluctuations observed deep in the swollen phase are of the same order as those near the transition. We, therefore, compute the transition line using the contour at $R_g  = 6\sigma$, which is approximately half-way between the value measured in the swollen and the compact phase. Overlaying these transition lines on the phase diagrams shows that they capture well the boundary between the two regimes in each diagram (see Fig.~\ref{fig:phasediagram}).
 
 \begin{figure}[t]
-%\includegraphics[width=\textwidth]{\DataFig/phase_diagram/phasemap.pdf}
-\includegraphics[width=\textwidth]{figure/phasemap.pdf}
+\includegraphics[width=\textwidth]{\DataFig/phase_diagram/phasemap.pdf}
+%\includegraphics[width=\textwidth]{figure/phasemap.pdf}
 \caption{Superposition of the transition lines estimated from the phase diagrams. It shows that the system exhibits four phases as demonstrated previously: a swollen-disordered (SD), swollen-ordered (SO), compact-disordered (CD), and compact-ordered (CO) phase. These phases are further confirmed from inspecting simulation movies, and a snapshot of the fibre is shown above for each of the phases along with the corresponding parameter values used. The brown and green arrows indicate the points within the parameter space used to study the SD to CD and SD to CO transitions respectively.}
 \label{fig:phasemap}
 \end{figure}
 
-Figure~\ref{fig:phasemap} shows the combined phase diagram with the transition lines superposed together.  Consistent with the observations from the simulations for $M = 1000$ beads, the system exhibits four phases: a swollen-disordered (SD), swollen-ordered (SO), compact-disordered (CD), and compact-ordered (CO) phase. A key feature of the diagram is that the the two transition lines seem to coincide with each other in the range $f = 1.5 - 2.5$. This shows that there is a direct SD to CO transition, rather than via an intermediate SO phase, in line with the behaviour reported in~\cite{michieletto2016}. 
+Fig.~\ref{fig:phasemap} shows the combined phase diagram with the transition lines superposed together.  Consistent with the observations from the simulations for $M = 1000$ beads, the system exhibits four phases: a swollen-disordered (SD), swollen-ordered (SO), compact-disordered (CD), and compact-ordered (CO) phase. A key feature of the diagram is that the the two transition lines coincide with each other in the range $f = 1.5 - 2.5$. This shows that there is a direct SD to CO transition, rather than via an intermediate SO phase, in line with the behaviour reported in~\cite{michieletto2016}. 
 
 With the mapping between the parameter space and the observed phases established, we proceed to characterise the nature (i.e. the transition order) of some of the phase transitions. The most relevant transition is that from the SD to CO phase, which is also investigated in~\cite{michieletto2016}. This transition could represent a biological process in which a repressive epigenetic mark spreads along the chromatin fibre and collapses it into a compact conformation to silence transcription activities. A classic example of such is the X-chromosome inactivation mentioned in section~\ref{sec:establishment}, where an inactive epigenetic mark proliferates in one of the X-chromosomes in female mammalian cells and causes that chromosome to condense into a Barr body~\cite{avner2001}. We mainly focus on this transition given its biological relevance. We also briefly analyse the SD to CD transition to understand the collapse of a heteropolymer when there is affinity between monomers of the same kind. This process relates well to the folding and denaturation of proteins~\cite{}, which is partly governed by the polar interactions between the different types of amino acids within the protein chain.
 
 Other transitions within the model are perhaps more well-understood and are therefore not studied in the present work. For instance, the SO to CO transition is analogous to the coil-to-globule transition (or theta collapse)~\cite{polymerbook} in polymer physics, and theories have predicted that this transition is second-order~\cite{moore1977, sanchez1979}. On the other hand, transitions which do not involve a change in the spatial conformation (i.e. SD to SO and CD to CO) could effectively be described by the 1D epigenetic model that this project is based on, which also shows a second-order transition~\cite{dodd2007}.
 
 \subsubsection{Transition between Swollen-Disordered and Compact-Ordered Phase}
-Reference~\cite{michieletto2016} reported that the transition between SD and CO phase is first-order-like. They emphasised the importance of such transition order, as it provides a natural framework that allows the formation and maintenance of a coherent epigenetic state in the presence of fluctuations. More specifically, hysteresis associated with first-order transitions, which was observed in~\cite{michieletto2016},  allows the chromatin fibre to have memory of its current state and can retain the state when subject to perturbations. This behaviour accounts well the regulation and heritability of epigenetic modifications. For instance, it is well-known that once a gene is inactivated during development process, it rarely becomes active again after further cell divisions. As supported by the results presented below, we argue that this transition is also first-order-like within our simulation model.
+Ref.~\cite{michieletto2016} reported that the transition between SD and CO phase is first-order-like. They emphasised the importance of such transition order, as it provides a natural framework that allows the formation and maintenance of a coherent epigenetic state in the presence of fluctuations. More specifically, hysteresis associated with first-order transitions, which was observed in~\cite{michieletto2016},  allows the chromatin fibre to have memory of its current state and can retain the state when subject to perturbations. This behaviour models well the regulation and heritability of epigenetic modifications. For instance, it is well-known that once a gene is inactivated during development process, it rarely becomes active again after further cell divisions. As supported by the results presented below, we argue that this transition is also first-order-like within our simulation model.
 
 %This can be understood from consider the free energy of the system as a function of the order parameters (i.e. $R_g$ and $m$). A first-order transition means that there is a discontinuous jump in the order parameters as the system crosses the phase boundary. For such a jump to exist, there must be an energy barrier separating the two states as. Hence, it is possible for the system to retain its current epigenetic state at the transition point even when subject to perturbations, as long as the change in energy associated with these perturbations are less than that of the barrier. A typical 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
-%\includegraphics[width=12cm]{\DataFig/data_f_2.0/bincum/bincum.pdf}
-\includegraphics[width=10.5cm]{figure/bincum.pdf}
+\includegraphics[width=13cm]{\DataFig/data_f_2.0/bincum/bincum.pdf}
+%\includegraphics[width=10.5cm]{figure/bincum.pdf}
 \caption{Measured binder cumulants for $\epsilon = 0.4 - 0.8$ in increments of $0.01$ (with $f = 2.0$) for three system sizes $M = 100$, $200$, and $400$. Each point is averaged over 10 simulations with the error bars indicating the standard error of the mean. The dashed line indicates the expected binder cumulant $B_m = 2/3$ when the system is in the ordered phase. It can be seen that the curves coincide at around $\epsilon = 0.6$, suggesting that the transition occurs near that point.}
 \label{fig:bincum}
 \end{figure}
-For simplicity, we consider $f = 2.0$ and vary $\epsilon$ in analysing this transition (see the green arrow in figure~\ref{fig:phasemap}). We first determine the transition point by computing the Binder cumulant~\cite{binder1981} for the magnetisation, which is given by
+For simplicity, we consider $f = 2.0$ and vary $\epsilon$ in analysing this transition (see the green arrow in Fig.~\ref{fig:phasemap}). We first determine the transition point by computing the Binder cumulant~\cite{binder1981} for the magnetisation, which is given by
 \begin{eqnarray}
 B_m = 1 - \frac{1}{3}\frac{\langle m^4 \rangle}{\langle m^2 \rangle^2}.
 \end{eqnarray}
-As explained in~\cite{binder1981}, $B_m$ approaches $0$ in the disordered phase (low $\epsilon$) and $2/3$ in the ordered one (high $\epsilon$). The transition point can be determined from calculating the cumulants for different system sizes and identifying their point of intersection~\cite{binder2010}. Figure~\ref{fig:bincum} shows the calculated cumulants as a function of $\epsilon \in [0.4,0.8]$ for $M = 100$, $200$, and $400$. It can be seen that $B_m$ approaches the expected values for both the disordered and ordered phase. The change in $B_m$ becomes more sharply defined as the system size increases due to finite-size effects. More importantly, the cumulant curves for different system sizes are close to each other when $\epsilon \sim 0.6$, suggesting that the transition occurs near that point. It should be noted that the three curves do not coincide exactly at the same point, suggesting that the transition is dependent on the system size. From considering the intersections of pairs of cumulant curves (i.e. $M = 100$ with $200$ and $200$ with $400$), we see that the transition occurs at a lower $\epsilon$ for a longer chain.
+As explained in~\cite{binder1981}, $B_m$ approaches $0$ in the disordered phase (low $\epsilon$) and $2/3$ in the ordered one (high $\epsilon$). The transition point can be determined from calculating the cumulants for different system sizes and identifying their point of intersection~\cite{binder2010}. Fig.~\ref{fig:bincum} shows the calculated cumulants as a function of $\epsilon \in [0.4,0.8]$ for $M = 100$, $200$, and $400$. It can be seen that $B_m$ approaches the expected values for both the disordered and ordered phase. The change in $B_m$ becomes more sharply defined as the system size increases due to finite-size effects. More importantly, the cumulant curves for different system sizes are close to each other when $\epsilon \sim 0.6$, suggesting that the transition occurs near that point. It should be noted that the three curves do not coincide exactly at the same point, suggesting that the transition is dependent on the system size. From considering the intersections of pairs of cumulant curves (i.e. $M = 100$ with $200$ and $200$ with $400$), we see that the transition occurs at a lower $\epsilon$ for a longer chain.
 
 With the transition point quantified, we now determine the order of the transition by performing a similar analysis to that conducted in~\cite{michieletto2016}. We consider the joint probability ($P(R_g,\widetilde{m})$) of finding the system with a particular radius of gyration $R_g$ and (signed) magnetisation $\widetilde{m}$. If the transition is first-order, one would expect three peaks in the distribution at the transition point due to the coexistence of the two phases, with one peak for the SD phase (high $R_g$ and low $\widetilde{m}$) and two symmetric peaks for the CO phase (low $R_g$ and $\widetilde{m} \sim \pm 1$). 
 
-Figure~\ref{fig:probN100} reports this joint probability for a chain with $M = 100$ beads for three $\epsilon$ values (0.5, 0.65, and 0.8), corresponding to the case in which the chain is in the SD phase, at the transition point, and in the CO phase. As expected, there is a single maximum in the distribution for the SD phase, and it splits into two symmetric maxima as the system transits to the CO phase.  Unlike the clear demonstration of three separate peaks reported in~\cite{michieletto2016}, the distribution here takes a ``boomerang'' shape at the transition point, suggesting that the system can move between the two phases without having to cross a significant energy barrier. Given the broadness of the distribution in the magnetisation direction for the SD regime (see figure~\ref{fig:probN100}a) and the small size of the chain, it is possible that there are three peaks within the distribution, but they are too close together and are superposed into the form reported in figure~\ref{fig:probN100}b. We further clarify the transition behaviour by considering larger system sizes. As depicted in figure~\ref{fig:probN200400}, three peaks begin to emerge as the system size increases (see the $P = 0.002$ contour in figure~\ref{fig:probN200400}b), with the peak for the SD phase moving to a higher $R_g$ value. From the figure, it can be inferred that the peaks would further separate for larger system sizes as the difference in $R_g$ between the SD and CO increases. The presence of three maxima suggests that there is phase coexistence near the transition point, which gives support that it is first-order. 
+Fig.~\ref{fig:probN100} reports this joint probability for a chain with $M = 100$ beads for three $\epsilon$ values (0.5, 0.65, and 0.8), corresponding to the case in which the chain is in the SD phase, at the transition point, and in the CO phase. As expected, there is a single maximum in the distribution for the SD phase, and it splits into two symmetric maxima as the system transits to the CO phase.  Unlike the clear demonstration of three separate peaks reported in~\cite{michieletto2016}, the distribution here takes a ``boomerang'' shape at the transition point, suggesting that the system can move between the two phases without having to cross a significant energy barrier. Given the broadness of the distribution in the magnetisation direction for the SD regime (see Fig.~\ref{fig:probN100}a) and the small size of the chain, it is possible that there are three peaks within the distribution, but they are too close together and are superposed into the form reported in Fig.~\ref{fig:probN100}b. We further clarify the transition behaviour by considering larger system sizes. As depicted in Fig.~\ref{fig:probN200400}, three peaks begin to emerge as the chain size increases (see the $P = 0.002$ contour in Fig.~\ref{fig:probN200400}b), with the peak for the SD phase moving to a higher $R_g$ value. From the figure, it can be inferred that the peaks would further separate for larger system sizes as the difference in $R_g$ between the SD and CO phase increases. The presence of three maxima suggests that there is phase coexistence near the transition point, which gives support that the transition is first-order-like. 
 
-\begin{figure}[H]
+\begin{figure}[h]
+\vspace{1.5cm}
 \centering
-%\centerline{\includegraphics[width=20cm]{\DataFig/data_f_2.0/probability/probN100-1.pdf}}
-\centerline{\includegraphics[width=20cm]{figure/probN100-1.pdf}}
+\centerline{\includegraphics[width=20cm]{\DataFig/data_f_2.0/probability/probN100.pdf}}
+%\centerline{\includegraphics[width=20cm]{figure/probN100-1.pdf}}
 \caption{Joint-probability distribution $P(R_g,\widetilde{m})$ for a modelled chromatin with $M = 100$ beads for three $\epsilon$ values, corresponding to the case in which the system is (a) in the SD phase, (b) at the transition point, and (c) in the CO phase. The feedback-to-noise ratio is $f = 2.0$ for all three cases. Each probability distribution is produced from sampling the system's configurations in 100 simulations.}
 \label{fig:probN100}
-%\end{figure}
-%\begin{figure}[]
-\vspace{20pt}
+\end{figure}
+\pagebreak
+\begin{figure}
 \centering
-%\includegraphics[width=\textwidth]{\DataFig/data_f_2.0/probability/probN200400.pdf}
-\includegraphics[width=\textwidth]{figure/probN200400.pdf}
-\caption{Joint probability distribution $P(R_g,\widetilde{m})$ at the transition point for two different system sizes: (a) $M = 200$ and (b) $M = 400$. Contour lines are plotted to highlight the variation in the probability values. These diagrams show the emergence of three peaks as the system size increases, indicating phase coexistence. As in figure~\ref{fig:probN100}, each distribution is produced from sampling 100 simulation trials.}
+\includegraphics[width=\textwidth]{\DataFig/data_f_2.0/probability/probN200400.pdf}
+%\includegraphics[width=\textwidth]{figure/probN200400.pdf}
+\caption{Joint probability distribution $P(R_g,\widetilde{m})$ at the transition point for two different system sizes: (a) $M = 200$ and (b) $M = 400$. Contour lines are plotted to highlight the variation in the probability values. These diagrams show the emergence of three peaks as the system size increases, indicating phase coexistence. As in Fig.~\ref{fig:probN100}, each distribution is produced from sampling 100 simulations.}
 \label{fig:probN200400}
 \end{figure}
-
-\begin{figure}[H]
+\pagebreak
+\begin{figure}[h]
 \vspace{1cm}
 \centering
-%\includegraphics[width=\textwidth]{\DataFig/hysteresis/compact/hysF2.pdf}
-\centerline{\includegraphics[width=\textwidth]{figure/hysF2.pdf}}
+\centerline{\includegraphics[width=\textwidth]{\DataFig/hysteresis/compact/hysF2.pdf}}
+%\centerline{\includegraphics[width=\textwidth]{figure/hysF2.pdf}}
 \caption{Simulation results indicating the presence of coexistence and hysteresis near the phase boundary. The top panel shows snapshots of coexisting phases ((a) SD and (b) CO) observed at $\epsilon = 0.6$. The bottom panel shows the (c) measured radius of gyration $R_g$ and (d) magnetisation $m$ when we vary $\epsilon$ slowly, first from 0.8 to 0.2 and then in the opposite direction ($1.5 \times 10^6\,\tau_{Br}$ in each direction; curves are coloured differently for the two directions). Both figures clearly show a small region of hysteresis cycle between $\epsilon \sim 0.58 - 0.62$. The curves in the figures represent averages over 10 simulations, and the shaded region indicates the standard error of the mean.}
 \label{fig:hysF2}
 \end{figure}
 \pagebreak
-The coexistence of the two phases is further confirmed when we demonstrate that the system exhibits hysteresis near the transition point, which is another hallmark of a first-order transition. Figure~\ref{fig:hysF2} reports the results of a set of simulations conducted to test the presence of hysteresis. In these simulations, we initialise the chromatin fibre with $M = 1000$ beads to a compact-ordered configuration with $\epsilon = 0.8$. We slowly reduce $\epsilon$ to 0.2 (in decrements of 0.001) such that the system changes from a CO to a SD configuration. Once at $\epsilon = 0.2$, the inverse process is performed for the system to return to the CO phase. Under this procedure, we observe that there is a small interval $\epsilon \sim 0.58 - 0.62$ in which the system can be in either phases depending on its configurational history. For example, at $\epsilon = 0.6$, the chain is compact and ordered when reducing $\epsilon$, but it is swollen and disordered when increasing $\epsilon$ (see figure~\ref{fig:hysF2}a, b). This provides a strong evidence that hysteresis and coexistence is present in this transition.
+The coexistence of the two phases is further confirmed when we demonstrate that the system exhibits hysteresis near the transition point, which is another hallmark of a first-order transition. Fig.~\ref{fig:hysF2} reports the results of a set of simulations conducted to test the presence of hysteresis. In these simulations, we initialise the chromatin fibre with $M = 1000$ beads to a compact-ordered configuration with $\epsilon = 0.8$. We slowly reduce $\epsilon$ to 0.2 (in decrements of 0.001) such that the system changes from a CO to a SD configuration. Once at $\epsilon = 0.2$, the inverse process is performed for the system to return to the CO phase. Under this procedure, we observe that there is a small interval $\epsilon \sim 0.58 - 0.62$ in which the system can be in either phases depending on its configurational history (Fig.~\ref{fig:hysF2}c, d). For example, at $\epsilon = 0.6$, the chain is compact and ordered when reducing $\epsilon$, but it is swollen and disordered when increasing $\epsilon$ (Fig.~\ref{fig:hysF2}a, b). This provides a strong evidence that hysteresis and coexistence is present in this transition.
 
-Since there is phase coexistence and hysteresis, we conclude that the SD to CO transition is first-order-like in this simulation model as in~\cite{michieletto2016}. The fact that the same transition order is reported in two models with different epigenetic modification rules suggests that the mechanism which gives rise to this transition nature lies in the coupling between the spatial and epigenetic dynamics of the chromatin fibre. As this coupling is the essence of the ``read-write'' mechanism, the results reported above provide further confidence in this mechanism as a reliable framework to create and maintain epigenetic modifications. 
+Since there is phase coexistence and hysteresis, we conclude that the SD to CO transition is first-order-like in this simulation model as in~\cite{michieletto2016}. The fact that the same transition order is reported in two models with different epigenetic modification rules suggests that the mechanism which gives rise to this transition nature lies in the coupling between the spatial and epigenetic dynamics of the chromatin fibre. As this coupling is the essence of the ``read-write'' mechanism, the results reported above provide further confidence that this mechanism is a reliable framework to create and maintain epigenetic states. 
 
 \FloatBarrier
 \subsubsection{Transition between Swollen-Disordered and Compact-Disordered Phase}
-We briefly investigate the transition between the SD and CD phase given its biological relevance to protein folding. We set $f = 1.0$ and vary $\epsilon$ to study this transition (see the brown arrow in figure~\ref{fig:phasemap}). As above, we determine the transition order from considering the probability distribution of finding the chain in a particular configuration, specified by the order parameters. Since the system remains epigenetically disordered in both phases, we only consider the distribution as a function of the system's radius of gyration $R_g$. Figure~\ref{fig:probN100F1} reports this distribution for $\epsilon$ ranging from $0.9$ to $1.4$ with $M = 100$. One can see that as $\epsilon$ increases, the peak of the distribution changes smoothly from a large $R_g$ to a small one, indicating that the system switches from the SD to the CD phase with no discontinuous jump in $R_g$ in the process. Further, the absence of two maxima in the distribution during the transition suggests that there is no phase coexistence. These behaviours indicate that the transition is second-order-like. 
+We briefly investigate the transition between the SD and CD phase given its biological relevance to protein folding. We set $f = 1.0$ and vary $\epsilon$ to study this transition (see the brown arrow in Fig.~\ref{fig:phasemap}). As above, we determine the transition order from considering the probability distribution of finding the chain in a particular configuration, specified by the order parameters. Since the system remains epigenetically disordered in both phases, we only consider the distribution as a function of the system's radius of gyration $R_g$. Fig.~\ref{fig:probN100F1} reports this distribution for $\epsilon$ ranging from $0.9$ to $1.4$ with $M = 100$. One can see that as $\epsilon$ increases, the peak of the distribution changes smoothly from a large $R_g$ to a small one, indicating that the system switches from the SD to the CD phase with no discontinuous jump in $R_g$ in the process. Further, the absence of two maxima in the distribution during the transition suggests that there is no phase coexistence. These behaviours indicate that the transition is second-order-like. 
 \begin{figure}[h]
-	\centering
-	%\includegraphics[width=14.0cm]{\DataFig/data_f_1.0/probN100F1.pdf}
-	\includegraphics[width=14.0cm]{figure/probN100F1.pdf}
-	\caption{Probability distributions $P(R_g)$ for a chain with $M = 100$ beads for increasing $\epsilon$ from $0.9$ (purple line) to $1.4$ (dark blue line) in increments of $0.1$. Each distribution is produced from sampling the system's configurations in 10 simulations. One can see that the peak of the distribution changes smoothly from a high to low $R_g$ as $\epsilon$ increases. The absence of two peaks in the distribution suggests that there is no phase coexistence.}
+\centering
+\includegraphics[width=15.0cm]{\DataFig/data_f_1.0/probN100F1.pdf}
+%\includegraphics[width=14.0cm]{figure/probN100F1.pdf}
+\caption{Probability distributions $P(R_g)$ for a chain with $M = 100$ beads for increasing $\epsilon$ from $0.9$ (purple line) to $1.4$ (dark blue line) in increments of $0.1$. Each distribution is produced from sampling the system's configurations in 10 simulations. One can see that the peak of the distribution changes smoothly from a high to low $R_g$ as $\epsilon$ increases. The absence of two peaks in the distribution suggests that there is no phase coexistence.}
 	\label{fig:probN100F1}
 \end{figure}
 \begin{figure}[h]
-	\centering
-	%\includegraphics[width=\textwidth]{\DataFig/hysteresis/compact/hysF1.pdf}
-	\includegraphics[width=\textwidth]{figure/hysF1.pdf}
-	\caption{Measured (a) radius of gyration $R_g$ and (b) magnetisation $m$ of a chain with $M = 1000$ as a function of $\epsilon$ when we vary $\epsilon$ slowly from 1.3 to 0.7 and then in the opposite direction (curves are coloured differently for each direction). The $R_g$ curves clearly show the lack of hysteresis in the transition, while $m$ varies negligibly as expected. As in the SD to CO transition, the curves reported here are averaged over 10 simulations; each simulation runs for $1.5\times10^6\,\tau_{Br}$ in each direction of changing $\epsilon$.}
+\centering
+\includegraphics[width=\textwidth]{\DataFig/hysteresis/compact/hysF1.pdf}
+%\includegraphics[width=\textwidth]{figure/hysF1.pdf}
+\caption{Measured (a) radius of gyration $R_g$ and (b) magnetisation $m$ of a chain with $M = 1000$ as a function of $\epsilon$ when we vary $\epsilon$ slowly from 1.3 to 0.7 and then in the opposite direction (curves are coloured differently for each direction). The $R_g$ curves clearly show the lack of hysteresis in the transition, while $m$ varies negligibly as expected. As in the SD to CO transition, the curves reported here are averaged over 10 simulations; each simulation runs for $1.5\times10^6\,\tau_{Br}$ in each direction of changing $\epsilon$.}
 	\label{fig:hysF1}
 \end{figure}
 
-To further confirm that the transition is continuous, we test whether there is hysteresis near the phase boundary using the same procedure conducted for the SD to CO transition. Specifically, we allow the fibre ($M = 1000$) to start from a CD configuration ($\epsilon = 1.3$) and slowly reduce $\epsilon$ (in decrements of 0.001) to change it to a SD form ($\epsilon = 0.7$). We then perform the reverse process for the fibre to switch back to the CD regime. Figure~\ref{fig:hysF1} shows the measured $R_g$ and $m$ of the system under such process averaged over 10 simulations. As expected, $m$ remains close to zero and only shows a slight increase by $\sim 0.03$ towards the CD phase, indicating that the fibre is disordered in both regimes. More importantly, figure~\ref{fig:hysF1}a shows that the $R_g$ curve for increasing $\epsilon$ follows closely to that for decreasing $\epsilon$, with the difference between the two curves being less than 10$\sigma$ throughout the entire interval of $\epsilon$. This suggests that the system exhibits negligible hysteresis near the transition. We also note that the entire transition takes place over a larger range of $\epsilon$ compared to the transition between the SD and CO phase. This is reasonable since the fibre remains disordered during the transition, which causes a greater difficulty for like-colour beads to bind to each other and condense the fibre into a globule form. Since $R_g$ varies smoothly, at least for the system size considered, between the two phases and effects like hysteresis and phase coexistence are not observed, we conclude that the SD to CD transition is second-order-like, in contrast to that between the SD and CO phase. 
+To further confirm that the transition is continuous, we test whether there is hysteresis near the phase boundary using the same procedure conducted for the SD to CO transition. Specifically, we allow the fibre ($M = 1000$) to start from a CD configuration ($\epsilon = 1.3$) and slowly reduce $\epsilon$ (in decrements of 0.001) to change it to a SD form ($\epsilon = 0.7$). We then perform the reverse process for the fibre to switch back to the CD regime. Fig.~\ref{fig:hysF1} shows the measured $R_g$ and $m$ of the system under such process averaged over 10 simulations. As expected, $m$ remains close to zero and only shows a slight increase by $\sim 0.03$ towards the CD phase, indicating that the fibre is disordered in both regimes. More importantly, Fig.~\ref{fig:hysF1}a shows that the $R_g$ curve for increasing $\epsilon$ follows closely to that for decreasing $\epsilon$, with the difference between the two curves being less than 10$\sigma$ throughout the entire interval of $\epsilon$. This suggests that the system exhibits negligible hysteresis near the transition. We also note that the entire transition takes place over a larger range of $\epsilon$ compared to the transition between the SD and CO phase. This is reasonable since the fibre remains disordered during the transition, which causes a greater difficulty for like-colour beads to bind to each other and condense the fibre into a globule form. Since $R_g$ varies smoothly, at least for the system size considered, between the two phases and effects like hysteresis and phase coexistence are not observed, we conclude that the SD to CD transition is second-order-like, in contrast to that between the SD and CO phase. 
 
 \FloatBarrier
 \subsection{Establishing and Maintaining Multiple Epigenetic Domains}
 The results present above demonstrate that the simulation model allows the formation and sustainment of a single, coherent epigenetic state. However, it is clear that real chromatin fibres can have more than one type of epigenetic state at the same time. Some sections of it would be covered with active marks while others with inactive ones such that only a specific set of genes needed by the cell remains transcriptionally active. Michieletto \etal ~\cite{michieletto2016} demonstrated that their model can produce long-lived domains of different epigenetic marks by a suitable choice of parameters, such that the epigenetic correlation length, or the typical size of an epigenetic domain, is comparable to the blob size of the polymer~\cite{gennes1985}; however, these domains are metastable, and it is not certain how long they could be sustained.
 
-Here we attempt to develop a framework that allows a robust establishment of multiple epigenetic domains along the chromatin fibre. We devise mechanisms for forming domains based on the concept of ``bookmarking''~\cite{sarge2005}. As mentioned in section XX, it has been postulated that there are proteins, or ``bookmarks'', which bind to the DNA to mark the active genes (effectively the epigenetic information) before mitosis. After cell division, these proteins recruit the appropriate enzymes to re-establish the genes that should be active (i.e. the epigenetic pattern of the ancestor cell). It is clear that the existence of such ``bookmarks'' would naturally allow multiple epigenetic domains to be formed on the fibre when coupled with the ``read-write'' mechanism.
+Here we attempt to develop a framework that allows a robust establishment of multiple epigenetic domains along the chromatin fibre. We devise mechanisms for forming domains based on the concept of ``bookmarking''~\cite{sarge2005}. As mentioned in section~\ref{sec:bookmark}, it has been postulated that there are proteins, or ``bookmarks'', which bind to the DNA to mark the active genes (effectively the epigenetic information) before mitosis. After cell division, these proteins recruit the appropriate enzymes to re-establish the genes that should be active (i.e. the epigenetic pattern of the ancestor cell). The existence of these bookmarks would naturally allow the presence of multiple epigenetic domains along the fibre.
 
-We model the presence of these bookmarks by setting a fraction $\phi$ of the beads along the fibre to be epigenetically static -- their colours cannot be changed throughout the simulation. We assume these beads must be in one of the marked states (i.e. $q = 1$ or $3$). Other beads are allowed to interact with these beads following the normal epigenetic modification rules. The only change to the rules is that the bookmark beads are not allowed to be selected for modifications. 
+We model these bookmarks by setting a fraction $\phi$ of the beads along the fibre to be epigenetically static -- their colours cannot be changed throughout the simulation. We assume these beads must be in one of the marked states (i.e. $q = 1$ or $3$). Other beads are allowed to interact with these beads following the normal epigenetic modification rules. The only change to the rules is that the bookmark beads are not allowed to be selected for modifications. 
 
 We now investigate the possible strategies for placing these bookmarks to create epigenetic domains. In particular, we focus on two aspects that may affect the effectiveness of domain formation: the spatial distribution of the bookmarks along the fibre and their density (i.e. the fraction of beads being bookmarks). 
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=14cm]{figure/bookmark_methods.pdf}
-\caption{Illustrations representing the three proposed methods of placing bookmarks: (a) cluster, (b) mixed, and (c) random.  We have set the number of bookmarks $Q = 6$ in all three examples. For cluster, we also have set the cluster size $n_c = 2$. The grey beads are non-bookmarks whose colours are free to be modified. The blue and red beads are the bookmarks and their colours are fixed throughout the simulation.}
+\caption{Illustrations representing the three proposed methods of placing bookmarks: (a) clustered, (b) mixed, and (c) random.  We have set the number of bookmarks $Q = 6$ in all three examples. For clustered, we also have set the cluster size $n_c = 2$. The grey beads are non-bookmarks whose colours are free to be modified. The blue and red beads are the bookmarks and their colours are fixed throughout the simulation.}
 \label{fig:bookmark_methods}
 \end{figure}
 
-To study how the distribution of bookmarks affects domain formation, we proposal three possible strategies for placing the bookmarks along the chromatin fibre as described below (also see figure~\ref{fig:bookmark_methods}):
+To study how the distribution of bookmarks affects domain formation, we proposal three possible strategies for placing the bookmarks along the chromatin fibre as described below (also see Fig.~\ref{fig:bookmark_methods}):
 \begin{enumerate}
-\item \textbf{Cluster}: $Q$ bookmarks (i.e. $Q = \phi M$) are placed along the fibre and are separated by evenly-spaced intervals. The colour is alternated after every $n_c$ consecutive bookmarks, where $n_c$ defines the cluster size. 
+\item \textbf{Clustered}: $Q$ bookmarks (i.e. $Q = \phi M$) are placed along the fibre and are separated by evenly-spaced intervals. The colour is alternated after every $n_c$ consecutive bookmarks, where $n_c$ defines the cluster size. 
 \item \textbf{Mixed}: Same as cluster, $Q$ bookmarks are evenly-spaced along the fibre; however, the colour alternates between every bookmark. 
-\item \textbf{Random}: $Q$ bookmarks are placed randomly along the fibre and their colours are random.
+\item \textbf{Random}: $Q$ bookmarks are placed randomly along the fibre and their colours are also random.
 \end{enumerate}
-
-It should be stressed that these methods of placing bookmarks are devised purely from the consideration that they are one the simplest approaches in assigning bookmarks. Bookmarking remains a highly debated topic and how bookmarks are distributed along the fibre remains a mystery. To quantify these method's effectiveness in domain formation, we consider the probability of a particular bead to have a colour $q$ during the simulation:
+%Bookmarking remains a highly debated topic and how bookmarks are distributed along the fibre remains a mystery. 
+It should be stressed that these methods of placing bookmarks are devised purely from the consideration that they are one the simplest approaches in assigning bookmarks. To describe the effectiveness of these methods for domain formation, we consider the probability of a particular bead to have a colour $q$ during the simulation:
 \begin{eqnarray}
+\label{eqn:probability}
 P_{q}(i) = \frac{1}{N} \sum_{t=t_0}^{t_N} q_i(t),
 \end{eqnarray}
 where $q_i(t)$ is the colour of bead $i$ at time $t$ and $N$ is the total number of samples of the system's epigenetic configurations. If epigenetic domains persist within the simulation, we would see regular patterns in $P_q$ along the fibre, whereas it would be nearly constant if there is only a single domain. We also consider the contact matrix (or contact map) to examine the interactions within the chromatin fibre. This matrix shows whether bead $i$ and $j$ are in contact with each other and is given by
@@ -457,64 +492,89 @@ C_{ij} = \left\{
 		0 & \textrm{otherwise},
 	\end{array}\right.
 \end{eqnarray}
-where $r_c$ is the maximum separation distance which we consider beads are in contact. The value $p_{ij}$ depends on the type of contact. We set $p_{ij} = 1$ if $q_i = q_j = 1$, $p_{ij} = 3$ if $q_i = q_j = 3$, and $p_{ij} = 2$ for all other interactions. The contact map is often used in Hi-C experiments to visualise the interactions within the genome. In particular, these experiments have shown that the chromatin fibre forms topological associated domains (TADs), which appear as block-like structures in the contact map. 
-
-We run simulations with these methods of assigning bookmarks using 
-
-Figure~\ref{fig:cluster} shows a representative simulation trial for each of the three devised methods of placing bookmarks. From the simulation snapshots, the kymograph, and the measured probability $P_{q=3}(i)$, we can see that the cluster method provides the most effective approach to establish domains out of the three strategies. 
-
-
-
-%We also quantify the coupling between the spatial organisation of the chromatin fibre and its epigenetic landscape by studying the contact matrix (or contact map):
-%\begin{eqnarray}
-%C_{ij} = \left\{ 
-%	\begin{array}{ll}
-%		1 & \textrm{if $\abs{\bm{r}_i - \bm{r}_j} < r_c$}\\
-%		0 & \textrm{otherwise},
-%	\end{array}\right.
-%\end{eqnarray}
-%where $r_c$ is the maximum separation distance between two beads which we considered they are in contact with each other.
-
-
-
+where $r_c$ is the maximum separation distance for beads to be considered in contact, which is set to $8\sigma$. The value $p_{ij}$ depends on the type of contact. Specifically, we set
+\begin{eqnarray}
+p_{ij} = \left\{ 
+	\begin{array}{ll}
+		1 & \textrm{if $q_i = q_j = 1$}\\
+		3 & \textrm{if $q_i = q_j = 3$}\\
+		2 & \textrm{for all other interactions}.
+	\end{array}\right.
+\end{eqnarray}
+Contact maps often used in Hi-C experiments to visualise the interactions within the genome. These experiments have shown that the chromatin fibre forms topological associated domains (TADs), which appear as block-like structures in the contact map~\cite{aiden2009, dixon2012}. 
 
 \begin{figure}[H]
 \centering
-%\vspace{-4cm}
-%\centerline{\includegraphics[height=20cm]{\DataFig/domain/bookmarks/bookmarks.pdf}}
-\includegraphics[height=20cm]{figure/bookmarks.pdf}
-\caption{Simulation results showcasing different methods of bookmark placements}
-\label{fig:cluster}
+\vspace{-2cm}
+\captionsetup{width=1.1\textwidth}
+\centerline{\includegraphics[height=20.5cm]{\DataFig/domain/bookmarks/bookmarks.pdf}}
+%\centerline{\includegraphics[height=19.5cm]{figure/bookmarks.pdf}}
+\caption{Simulation trials showcasing the three proposed methods of bookmark placement: (a) clustered, (b) mixed, and (c) random. The top panel of each figure are snapshots of the chromatin fibre during the simulation. The left panel reports the probability of finding each bead of the fibre to be in the state $q = 3$ during the simulation. The main panel is the kymograph showing the epigenetic colour of each bead over the entire simulation. We label the bookmarks with light blue or yellow colour, corresponding to the state $q = 1$ and $q= 3$ respectively. The right panel shows the contact map of the system measured at the end of the simulation. The colours highlight different types of contact: red for $q_i = q_j = 1$, blue for $q_i = q_j = 3$, and grey for all other interactions.}
+\label{fig:bookmark}
 \end{figure}
 
-Given that the cluster method provides an effective approach to maintain domains of , we turn to answer the question of the density of bookmarks needed for the domains to form. It is clear that when the fraction of , 
+We run simulations for each bookmark placement method using a chain with $M = 1000$ beads that contains $Q = 100$ bookmarks (i.e. $\phi = 0.1$). This translates to condition that there are 9 normal beads, or approximately 150 nucleosomes, between two bookmarks. For the cluster method, we set the cluster size $n_c = 10$. To facilitate domain formation, we choose $f = 2.0$ and $\epsilon = 0.65$, which would cause the fibre to be in the compact-ordered (CO) phase if bookmarks are not present (see Fig.~\ref{fig:hysF2}). 
 
-To quantify the quality of the domains formed, we devise the domain function which is the probability distribution that one would measure if the the 
-\begin{eqnarray}
-\Pi(i) = \frac{1}{2}\textrm{sgn}\left[\sin\left(\frac{\pi}{100}i\right)\right] + \frac{1}{2},
-\end{eqnarray}
-where $i$ is the bead index (i.e. $i \in [0, M-1]$), $\textrm{sgn}(x)$ is the sign function and is equal to $1$ when $x > 0$ and $-1$ when $x < 0$. s
+Fig.~\ref{fig:bookmark} shows a simulation trial for each of the three devised methods of placing bookmarks. From the simulation snapshots, the kymograph, and the measured probability $P_{q=1}(i)$, we can see that the clustered method provides the most effective approach to establish domains. In that simulation, domains are quickly formed within $10^3\,\tau_{Br}$. These domains then undergo a gradual sorting process driven by like-colour interactions, eventually reaching a configuration in which the fibre is in a globule form with each half dominated by a different epigenetic mark. This configuration is consistent with the ``chequerboard'' pattern observed in the contact map (Fig.~\ref{fig:bookmark}a), which indicates that most domains of the same colour are in contact with each other. 
 
-\begin{eqnarray}
-\Delta(i) = P_{q=3}(i) - \Pi(i)
-\end{eqnarray}
-\begin{eqnarray}
-\Delta = \sqrt{\langle\Delta^2(i)\rangle} = \left(\langle\left(P_{q=3}(i) - \Pi(i)\right)^2\rangle\right)^{\frac{1}{2}}
-\end{eqnarray}
+The chequerboard pattern contrasts with the block-like structures produced by TADs that are observed in experiments. A possible reason why the system does not produce such pattern here is that, unlike Ref.~\cite{brackley2016}, the model does not explicitly simulate the reader enzymes or bridging proteins that connect like-colour beads. A finite number of these proteins would limit the degree of contact between domains and possibly allowing them to remain separate from each other. We also recall that the model allows a swollen-ordered regime; hence, it might be possible to achieve TAD-like structures by incorporating bookmarks to a fibre in that condition. %This would be an interesting avenue for future work.
+
+The random method also gives rise to domains as indicated by the kymograph and the measured probability (Fig.~\ref{fig:bookmark}c). This is remarkable since the bookmarks are placed stochastically on the fibre. It thus demonstrates that the presence of a sufficient number of bookmarks, together with the read-write mechanism, provides an effective, reliable pathway to create epigenetic domains. In addition, the contact map for this case exhibits block-like structures analogous to those observed in TADs, suggesting that domains remain spatially separated from one another. The inability for like-colour domains to associate may be due to the irregular alternation of the bookmark colours, increasing the difficulty for like-colour beads to aggregate. This explanation is also supported by the simulation for the mixed method, in which no domains are observed (Fig.~\ref{fig:bookmark}b). In that method, the colour alternates between every bookmark, thus maximising the difficulty for the spreading of epigenetic colour. 
+
+It is also striking to note that the placement of bookmarks has a direct effect on the spatial conformation of the fibre. In both the random and mixed case, the fibre remains in a swollen condition throughout the simulation, even though the parameters used ($f = 2.0$ and $\epsilon = 0.65$) would normally drive the system to a collapsed phase (see Fig.~\ref{fig:hysF2}). This observation further highlights the intimate relation between epigenetic modifications and chromatin dynamics. Given that the mixed method makes the fibre to adapt a more open conformation, it would be interesting to see whether alternating the method of placing bookmarks between mixed and clustered would produce a fibre with distinct globules of different epigenetic colours.
+
+These simulations also demonstrated that the formation of domains require cooperativity -- the activity of more than a single bookmark. Domains are only observed in cases when there are multiple bookmarks of the same colour close together. This leads to the other question which we would like address: the density of bookmarks needed for domains to form and to be stable. 
+
+We study this question using the clustered method, as it is the most effective approach to create domains out of three considered. It also allows one to vary the density of bookmarks systematically. We perform a set of simulations in which the fraction of beads being bookmarks $\phi$ vary from 0.01 to 0.1 for a chain with $M = 1000$ (i.e. $Q = 10 - 100$). To facilitate the comparison between simulations with different $\phi$, we fix the total number of domains on the fibre to be 10. This is achieved by adjusting $n_c$, the number of consecutive bookmarks with the same colour, as $\phi$ changes. We also fix the colours of these domains such that the first domain, if established, should have a colour $q = 1$ (the colours of subsequent domains alternate according to the clustered method). To enhance domain formation, we use $\epsilon = 1.0$ in these simulations while keeping $f = 2.0$ as before.
 
 \begin{figure}[h]
 \centering
-%\centerline{\includegraphics[width=20cm]{\DataFig/domain/vary_phi/cluster.pdf}}
-\centerline{\includegraphics[width=20cm]{figure/cluster.pdf}}
-\caption{Clustering}
+\centerline{\includegraphics[width=20cm]{\DataFig/domain/vary_phi/cluster.pdf}}
+%\centerline{\includegraphics[width=20cm]{figure/cluster.pdf}}
+\caption{Simulation trials for three different values of $\phi$ (the fraction of beads being bookmarks): (a) $0.02$, (b) $0.04$, and (c) $0.08$. The top panel of each subfigure contains snapshots of the chromatin during the simulation. The left pane shows the probability of finding each bead in state $q = 1$ in the simulation. The main panel is the kymograph, reporting the epigenetic colour of each bead over time. One can see that as $\phi$ increases, the fibre switches from having a single domain to multiple domains. Figure (d) shows the root-mean-square deviation $\Delta$ of the measured probability with the perfect domain function for $\phi = 0.01 - 0.1$ in increments of $0.01$. The curve is computed from averaging over 5 simulations. It can be seen that $\Delta$ drops abruptly near 0.04, signifying the transition point.}
 \label{fig:cluster}
 \end{figure}
+
+Fig.~\ref{fig:cluster} shows simulation trials for three different fractions: $\phi = 0.02$, $0.04$, and $0.08$. As anticipated, we see a transition between a phase where there is a single coherent domain and one where there are multiple domains. From the reported kymographs, one can identify that $\phi = 0.04$ is close to the transition point, as domains appear and disappear during the simulation. To further characterise this transition, we need to describe the quality of the domains. We devise the perfect domain function, which is the probability function $P_{q=1}(i)$ (see Eq.~\ref{eqn:probability}) that one would obtain if the domains along the fibre are perfect -- all beads have the intended colour of the domains throughout the entire simulation. This function is simply a square wave:
+\begin{eqnarray}
+\Pi(i) = \frac{1}{2}\left[\textrm{sgn}\left[\sin\left(\frac{\pi}{100}i\right)\right] + 1 \right],
+\end{eqnarray}
+where $i$ is the bead index (i.e. $i \in [1, M]$) and $\textrm{sgn}(x)$ is the usual sign function. We can quantify the quality of the observed domains by computing the root-mean-square deviation of the actual measured probability with this function:
+\begin{eqnarray}
+\Delta = \sqrt{\langle\Delta^2(i)\rangle} = \left(\langle\left(P_{q=1}(i) - \Pi(i)\right)^2\rangle\right)^{\frac{1}{2}}.
+\end{eqnarray}
+One would expect $\Delta$ to be large when there is only a single domain, as the deviation between $\Pi$ and $P$ would be significant for regions where the opposite coloured domain is expected. As domains begin to form when $\phi$ increases, $P$ would approach the functional form of $\Pi$ and $\Delta$ should drop. Fig.~\ref{fig:cluster}d shows the measured $\Delta$ as we vary $\phi$. It can be seen that $\Delta$ approaches $\sim$~0.58 in the regime of a single domain and $\sim$~0.18 in the regime of multiple domains. Consistent with the qualitative data, the transition occurs near $\phi_c \sim 0.04$ when $\Delta$ drops abruptly. Hence, we conclude that the critical fraction of beads needed to be bookmarked along the fibre for domains to form is around $4\%$.
+
 \FloatBarrier
+\pagebreak
+\section{Discussion and Conclusion}
+In this project, we have studied a novel simulation model that couples the polymer dynamics of the chromatin fibre with epigenetic modifications based on the ``read-write'' mechanism. Different from the work by Michieletto \etal~\cite{michieletto2016}, the rules for modifying the epigenetic marks are based on an intrinsically non-equilibrium model proposed by Dodd \etal~\cite{dodd2007}. We have modelled the chromatin fibre as a chain of beads with different epigenetic colours. The 
 
-\section{Discussions}
-We have demosntrate
+By varying the interaction energy between like-colour beads $\epsilon$ and the feedback-to-noise ratio $f$, we have identified that the model exhibits four phases classified by the compactness of the chromatin fibre and its epigenetic coherence: swollen-disordered (SD), swollen-ordered (SO), compact-disordered (CD), and compact-ordered (CO). The presence of an ordered phase further supports that the ``read-write'' mechanism is a reliable framework for establishing and maintaining a coherent epigenetic state. It is also important to note that while an overall epigenetic order is maintained, the underlying epigenetic landscape remains dynamical; individual beads continue to change their colours during the simulation (via the noisy and recruitment mechanisms). This contrasts with previous studies on the spatial organisation of the chromatin that depended on a static epigenetic pattern~\cite{brackley2013, dixon2012, sexton2012, boettiger2016}. Since the dominant epigenetic colour in the ordered phase is selected by a symmetry breaking mechanism (as different like-colour interactions have the same strength), the model demonstrates epigenetic bistability~\cite{ferrell2012}, meaning that it is possible for two different epigenetic states to be established. This accounts well for the phenomenon that two cell lines derived from the same ancestor can differ in the regions where genes are active or inactive.
 
-\section{Conclusion}
+We have presented phase diagrams which identify the regions of the parameter space ($\epsilon,f$) that correspond to each of the four phases. Guided by these diagrams, we have analysed the transition between the SD and CO phase. This transition is biologically relevant as it corresponds well to the process of chromatin inactivation, during which a swollen, transcriptionally active region of the chromatin fibre collapses into a compact form (heterochromatin)~\cite{molcellbiobook}. In this process, the repressive epigenetic marks (e.g. histone methylation) established along the fibre increase the self-attraction of the chromatin, causing it to aggregate and condense~\cite{cook2002}. A classic example of such is the X-chromosome inactivation in female mammalian cells~\cite{avner2001, heard2001}. 
+
+One of the key results of the project is that this SD to CO transition is first-order-like, as indicated by the presence of hysteresis and phase coexistence near the transition point. This transition order is also observed in the model used by Michieletto \etal~\cite{michieletto2016}. This type of transition is particularly important, as it naturally gives rise to desired properties for epigenetic regulations. For instance, the observation of hysteresis signifies that the system has memory of its previous configuration and can return to that state after being perturbed. This corresponds well to the behaviour that a cell can re-establish its epigenetic information during disruptive events such as DNA replication and cell division. In addition, the fact that the same transition order has been observed in two models with different epigenetic modification rules suggests that this transition behaviour is ultimately linked to the coupling between the polymer and the epigenetic dynamics. It further highlights the importance of investigating the connection between these two aspects of chromosomal behaviour. 
+
+We have also briefly analysed the transition between the SD and CD phase. Due to the absence of hysteresis and the continuous change in the order parameter, the radius of gyration, when moving between the phases, we have concluded that it is second-order-like. We note that this transition may be relevant to the discussion of protein folding, which can be viewed as a heteropolymer collapse problem.
+
+The most important and novel element of this project is the investigation of the possible mechanisms for establishing multiple epigenetic domains. Theoretical models proposed so far have only focused on the formation and regulation of a single domain~\cite{dodd2007, sneppen2008, hathaway2012, zhang2014, jost2014, michieletto2016}. However, it is clear that real chromatin must have the ability to accommodate multiple regions with different epigenetic states, since it is known that there are active and inactive territories along the fibre. Inspired by the concept of gene bookmarking~\cite{sarge2005}, we have devised a framework to establish domains by placing epigenetically static beads, or bookmarks, on the modelled chromatin fibre. These bookmarks model the effect of proteins binding to specific sites on the DNA to preserve the gene pattern from one generation of cell to the next. 
+
+Remarkably, such framework readily allows domains to be formed when a sufficient number of bookmarks are present, without needing detailed knowledge about their spatial distribution. This is supported from our observation that a random assignment of bookmarks can generate domains, producing contact maps that show similarity to those produced by topologically-associated domains (TADs) in Hi-C experiments~\cite{aiden2009, dixon2012}. 
+
+Nevertheless, we found that domain formation requires cooperativity, or the presence of multiple like-colour bookmarks in close proximity. This criteria is based on the observation that no domain was formed when the epigenetic colour alternates between every bookmark. Further, simulation trials with a single, isolated bookmark also did not yield domains. We have also conducted a brief analysis on the critical density of bookmarks needed for establishing domains. By varying the fraction of beads being bookmarks, we found that domains can already exist when 4\% of the beads are epigenetically static. 
+
+Another interesting feature observed is that the placement of bookmarks has a direct impact on the spatial conformation of the chromatin. In particular, assigning bookmarks randomly or distributing them evenly with alternating colour can cause the chromatin to remain open in conditions that it would normally collapse. The inability for the chromatin to collapse could be explained by the fact that the bookmarks impede the spreading of a uniform epigenetic mark, thus reducing like-colour interactions that drive the compaction process.
+
+A critical point that should be emphasised is the non-equilibrium nature of the simulation model. This is mostly easily seen from the consideration that there are two effective temperatures in the system, one for the polymer dynamics and the other for epigenetic modifications, and they generally would not be equal. Most of the observed behaviours only exist due to the fact that the system is out-of-equilibrium. These behaviours include the presence of a swollen-ordered phase and a compact-disordered phase. These phases were not found in Ref.~\cite{michieletto2016} in the case when the fibre is in thermal equilibrium. More crucially, it is unlikely that an equilibrium model for epigenetic modifications would be able to sustain multiple domains; such regular arrangement of epigenetic colour along the fibre would be entropically unfavourable in high stochastic noise and ``energetically'' unfavourable in low noise due to the interfaces between domains. There have been studies which indicate that non-equilibrium dynamics plays an important role in chromosome organisation~\cite{goloborodko2016a,goloborodko2016b}.  The results presented here provide yet another concrete example of how the
+
+There are several directions for future work based on the results presented in this project. Firstly, it would be interesting to test whether the model exhibits ultrasensitivity as in~\cite{michieletto2016}. Ultrasensitivity is an important aspect for epigenetic . Although the epigenetic model on its own have already demonstrated such behaviour~\cite{sneppen2008}, it has not bee . 
+
+Secondly, 
+
+Thirdly, in the experiment of varying the doma
+
+In summary, our work on a novel simulation model that couples the 
 
 \pagebreak
 % This command tells LaTeX how to format your references in the biblography. The standard plain formatting, with
@@ -529,6 +589,118 @@ We have demosntrate
 
 % Consequently the main text should be self-contained.
 \appendix
-\input{appendix}
+\section{Additional Simulation Details}
+We discuss additional simulation details here for those who intend to reproduce the results obtained in the report.
+
+\subsection{The Velocity-Verlet Integration Scheme}
+\label{app:velocity-verlet}
+The velocity-Verlet integration scheme is a variation of the Verlet algorithm. The Verlet algorithm can be obtained by considering the Taylor expansions of the particle's position $\bm{r}(t)$ at $t$ :
+\begin{align}
+\bm{r}(t + \inc t) & = \bm{r}(t) + \bm{v}(t) \inc t + \frac{\bm{a}(t) }{2}\inc t^2 + \frac{\bm{b}(t) }{6}\inc t^3 + \O{\inc t^4}\\
+\bm{r}(t - \inc t) & =  \bm{r}(t) - \bm{v}(t) \inc t  + \frac{\bm{a}(t)}{2} \inc t^2 - \frac{\bm{b}(t) }{6}\inc t^3 + \O{\inc t^4},
+\end{align}
+where $\bm{b}(t) = \frac{\partial^3\bm{r}(t)}{\partial t^3}$, $\bm{a}(t)$ is the acceleration, and $\bm{v}(t)$ is the velocity. Adding the two equations gives
+\begin{equation}
+\bm{r}(t+\inc t)  = 2\bm{r}(t) - \bm{r}(t-\inc t) + \bm{a}(t)\inc t^2 + \O{\inc t^4},
+\end{equation}
+which is the standard form of the Verlet algorithm. As suggested by the equation, the integrated position has an accuracy up to fourth order in $\inc t$. The velocity of the particle can also be obtained from subtracting the two expansions
+\begin{equation}
+\bm{r}(t+\inc t) - \bm{r}(t - \inc t) = 2\bm{v}(t)\inc t + \O{\inc t^3},
+\end{equation}
+which gives
+\begin{equation}
+\bm{v}(t) = \frac{\bm{r}(t+\inc t) - \bm{r}(t - \inc t)}{2\inc t} + \O{\inc t^2},
+\end{equation}
+so the velocity has an accuracy up to second order. The standard form of the Verlet algorithm gives the position and velocity of the particle at different time steps. The velocity-Verlet algorithm resolves this problem. In this algorithm, one performs the following procedure:
+\begin{enumerate}
+\item Compute $\bm{v}\left(t + \frac{\inc t}{2}\right) = \bm{v}(t) + \frac{\bm{a}(t)}{2} \inc t$
+\item Compute $\bm{r}(t + \inc t) = \bm{r}(t) + \bm{v}\left(t + \frac{\inc t}{2}\right)\inc t$
+\item Calculate $\bm{a}(t + \inc t)$ from evaluating the force of the particle at the new position $\bm{r}(t + \inc t)$
+\item Compute $\bm{v}\left(t + \inc t\right) = \bm{v}\left(t + \frac{\inc t}{2}\right) + \frac{\bm{a}(t + \inc t)}{2} \inc t$
+\end{enumerate}
+After completing the these steps one would have both the position and velocity data of the particle at time $t + \inc t $. It can be readily shown by substitution that this set of procedures satisfies the standard form of the Verlet algorithm, so the order of accuracy for position and velocity are the same as before.  
+
+\subsection{Mapping between Simulation and Physical Timescales}
+\label{app:timescale}
+In section~\ref{sec:mapping}, we discussed the mapping between simulation and physical time scales. There are, however, some subtleties when considering this mapping. One first needs to recognise that there are three relevant timescales in performing molecular dynamics simulations. Firstly, the length scale $\sigma$, the mass $m$, and the energy $\hat{\epsilon}$ give rise to a natural simulation unit called the Lennard Jones time unit :
+\begin{eqnarray}
+\tau_{LJ} = \sqrt{\frac{m\sigma}{\hat{\epsilon}}}
+\end{eqnarray}
+This is in fact the simulation time unit used in LAMMPS.
+
+\section{Additional Figures}
+\subsection{Reproduced Results}
+As 
+\label{app:doddresult}
+\begin{figure}[h]
+\centering
+\includegraphics[width=14cm]{\DataFig/dodd_paper/dodd.pdf}
+\caption{Probability distribution of finding $N_b$ number of beads in state $q = 3$ in a chain of $M = 60$ beads for four different feedback-to-noise ratio $f$: (a) 0.4, (b) 1.0, (c) 1.4, and (d) 2.0.}
+\label{fig:dodd}
+\end{figure}
+\FloatBarrier
+
+\section{Accessing the Source Code}
+\label{app:code}
+\subsection{Downloading the Source Code}
+The source code is available for download from GitHub and can be accessed by the following link:~\url{https://github.com/mchchiang/epigenetics}. The following is the procedure to clone the source code:
+\begin{enumerate}
+\item Open terminal and navigate to the desired directory where the code will be stored
+\item Enter the following command to clone the code from GitHub:
+\begin{lstlisting}
+git clone https://github.com/mchchiang/epigenetics.git
+\end{lstlisting}
+\end{enumerate}
+
+\subsection{Compiling the Source Code}
+\begin{enumerate}
+\item Navigate to the directory \texttt{../Java/} in the source code package.
+\item To compile the source code only (without the test cases), enter the command:
+\begin{lstlisting}
+ant compile
+\end{lstlisting}
+The compiled code will be located at \texttt{../Java/build/classes/dna\_epigenetics}
+\item To compile the test cases, enter the command:
+\begin{lstlisting}
+ant compile test
+\end{lstlisting}
+The compiled unit tests will be located at\\ \texttt{../Java/build/tests/classes/dna\_epigenetics}
+\item The tests can be run by issuing the command:
+\begin{lstlisting}
+ant test
+\end{lstlisting}
+The terminal should output whether the tests were successful or not. A comprehensive report of the tests can be obtained by calling
+\begin{lstlisting}
+ant test-report
+\end{lstlisting}
+This would produce an \texttt{html} report of the test that can be viewed with a web browser. The file is located at the directory \texttt{../Java/build/tests/html/index.html}
+\end{enumerate}
+
+\subsection{Running the Program}
+Running the program would require LAMMPS to be installed on the machine. The details for download and installing LAMMPS can be found here:~\url{http://lammps.sandia.gov/}. The following is the procedure for a simulation trial as conducted in the report:
+\begin{enumerate}
+\item Navigate to the root directory of the source code package
+\item Copy the compiled epigenetic Java code to a new directory (e.g. \texttt{../trial/} by issuing the following commands
+\begin{lstlisting}
+mkdir trial
+cp -r Java/build/classes/dna_epigenetics trial
+\end{lstlisting}
+This is the directory where the simulation will be run
+\item Copy the files from \texttt{../LAMMPS} to the same directory
+\begin{lstlisting}
+cp -r LAMMPS/* trial
+\end{lstlisting}
+\item Navigate to the new directory that you have created (i.e. \texttt{trial}). Within the directory, there should be a file called \texttt{init.sh}. All simulation parameters are set within this script (e.g. interaction energy between like-colour beads, feedback-to-noise ratio, simulation box size, etc.). The comments in the script provide information on how to set the parameter values.
+\item Run the \texttt{init.sh} script:
+\begin{lstlisting}
+bash init.sh
+\end{lstlisting}
+This will create a directory, whose name is based on the parameters chosen for the simulation. Within the directory contains the data file and the configuration file needed by LAMMPS to run the simulation.
+\item Navigate to the directory created by the script. To run the simulation, enter
+\begin{lstlisting}
+lmp_serial -screen none -log logfile.lammps -in epi_*.lam &
+\end{lstlisting}
+The simulation should begin. All output generated by LAMMPS will be stored the log file \texttt{logfile.lammps}. Depending on the settings in the \texttt{init.sh} script, the simulation may output the positions of the beads at the specified time interval. These are stored in the file with the prefix \texttt{pos\_*}. Similarly, the epigenetic state of each bead may also be outputted and they are stored in the file with the prefix \texttt{state\_*}. In all cases, a file with prefix \texttt{stats\_*} is generated which contains the magnetisation of the system and the total number of beads in each state at each recolouring time step.
+\end{enumerate}
 
 \end{document}
